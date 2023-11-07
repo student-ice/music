@@ -10,6 +10,7 @@ declare module 'vue' {
     Banner: typeof import('./src/components/Banner.vue')['default']
     Cover: typeof import('./src/components/Cover.vue')['default']
     CoverGrid: typeof import('./src/components/CoverGrid.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElRow: typeof import('element-plus/es')['ElRow']
