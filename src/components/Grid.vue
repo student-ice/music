@@ -33,6 +33,8 @@ const rowStyles = computed(() => {
 const getImageUrl = (item) => {
   if (props.type === 'artist') {
     return item.img1v1Url;
+  } else if (props.type === 'discover') {
+    return item.coverImgUrl;
   }
   return item.picUrl;
 };
@@ -41,7 +43,7 @@ const getImageUrl = (item) => {
 <template>
   <div class="cover-grid" :style="rowStyles">
     <div class="item" v-for="item in items" :class="{ artist: props.type === 'artist' }">
-      <Cover :image-url="getImageUrl(item)" :type="type"/>
+      <Cover :image-url="getImageUrl(item)" :type="type" />
       <div class="text">
         {{ item.name }}
       </div>
@@ -52,7 +54,7 @@ const getImageUrl = (item) => {
 <style lang="scss" scoped>
 .cover-grid {
   display: grid;
-  grid-gap: 20px;
+  margin-top: 20px;
 
   .item {
     .text {
@@ -68,19 +70,23 @@ const getImageUrl = (item) => {
       overflow: hidden;
       word-break: break-all;
     }
+
     .text:hover {
       cursor: pointer;
       text-decoration: underline;
     }
   }
 }
+
 .item.artist {
   display: flex;
   flex-direction: column;
   text-align: center;
+
   .cover {
     display: flex;
   }
+
   .text {
     margin-top: 4px;
   }
