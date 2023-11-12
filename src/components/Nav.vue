@@ -43,7 +43,7 @@ nav {
 
       a.router-link-exact-active {
         font-weight: bold;
-        color: #409eff;
+        color: var(--highlight-color);
       }
 
       a:hover {

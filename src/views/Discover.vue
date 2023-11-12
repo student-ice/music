@@ -2,7 +2,6 @@
 import { ref, onMounted } from "vue";
 import Grid from "@/components/Grid.vue";
 import { topPlaylists } from "@/api/playlist";
-import { ElMessage } from 'element-plus'
 
 const categories = ref(["全部", "推荐", "官方", "华语", "欧美", "流行"]);
 const currentCategory = ref("全部");
@@ -14,7 +13,6 @@ var offset = 0;
 
 onMounted(() => {
   topPlaylists({ cat: currentCategory.value, limit, offset }).then((res) => {
-    checkIsFrequentRequests(res);
     if (!res.more) {
       hasMore.value = false;
       return;
@@ -23,16 +21,6 @@ onMounted(() => {
   });
 });
 
-// 检测是否请求频繁
-const checkIsFrequentRequests = (response) => {
-  if (response.code === 406) {
-    ElMessage({
-      message: '请求频繁，请稍后再试',
-      type: 'error'
-    })
-  }
-}
-
 const switchCategories = (item: string) => {
   currentCategory.value = item;
   limit = 20;
@@ -40,7 +28,6 @@ const switchCategories = (item: string) => {
   loading.value = false;
   hasMore.value = true;
   topPlaylists({ cat: item, limit: 20 }).then((res) => {
-    checkIsFrequentRequests(res);
     if (!res.more) {
       hasMore.value = false;
       return;
@@ -53,7 +40,6 @@ const switchCategories = (item: string) => {
 const loadMore = () => {
   loading.value = true;
   topPlaylists({ cat: currentCategory.value, limit, offset: offset + limit }).then((res) => {
-    checkIsFrequentRequests(res);
     if (!hasMore) {
       return;
     }
@@ -79,7 +65,7 @@ const loadMore = () => {
     </div>
     <Grid :items="playlists" :column-num="5" type="discover" />
     <div class="load-more" v-show="hasMore">
-      <el-button size="large" :loading="loading" @click="loadMore">加载更多</el-button>
+      <a-button size="large" :loading="loading" @click="loadMore">加载更多</a-button>
     </div>
   </div>
 </template>
@@ -109,14 +95,14 @@ const loadMore = () => {
   }
 
   .btn.active {
-    background-color: #d9ecff;
-    color: #409EFF;
+    background-color: var(--highlight-bg-color);
+    color: var(--highlight-color);
   }
 
   .btn:hover {
     cursor: pointer;
-    background-color: #d9ecff;
-    color: #409EFF;
+    background-color: var(--highlight-bg-color);
+    color: var(--highlight-color);
   }
 }
 

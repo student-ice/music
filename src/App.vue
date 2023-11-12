@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Nav from '@/components/Nav.vue';
+import Toolbar from '@/components/Toolbar.vue';
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Nav from '@/components/Nav.vue';
     <main>
       <router-view></router-view>
     </main>
+    <Toolbar />
   </div>
 </template>
 

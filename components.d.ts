@@ -7,19 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Banner: typeof import('./src/components/Banner.vue')['default']
+    AButton: typeof import('ant-design-vue/es')['Button']
+    AImage: typeof import('ant-design-vue/es')['Image']
+    ASlider: typeof import('ant-design-vue/es')['Slider']
     Cover: typeof import('./src/components/Cover.vue')['default']
-    CoverGrid: typeof import('./src/components/CoverGrid.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElCol: typeof import('element-plus/es')['ElCol']
-    ElImage: typeof import('element-plus/es')['ElImage']
-    ElRow: typeof import('element-plus/es')['ElRow']
-    ElText: typeof import('element-plus/es')['ElText']
     Grid: typeof import('./src/components/Grid.vue')['default']
+    IconButton: typeof import('./src/components/IconButton.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SongGrid: typeof import('./src/components/SongGrid.vue')['default']
     Toolbar: typeof import('./src/components/Toolbar.vue')['default']
   }
 }

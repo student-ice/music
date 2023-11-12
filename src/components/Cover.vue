@@ -23,15 +23,20 @@ const coverStyles = computed(() => {
 
 <template>
   <div class="cover">
-    <el-image :src="imageUrl" :style="coverStyles" lazy></el-image>
+    <a-image :src="imageUrl" :preview="false" :style="coverStyles" lazy></a-image>
   </div>
 </template>
 
 <style>
-.el-image {
+.ant-image {
   width: 100%;
   border-radius: 0.75em;
   user-select: none;
   aspect-ratio: 1 / 1;
+
+  .ant-image-img {
+    object-fit: cover;
+    border-radius: 0.75em;
+  }
 }
 </style>
