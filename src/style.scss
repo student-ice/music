@@ -1,9 +1,3 @@
-:root {
-  // 文本高亮颜色
-  --highlight-color: #409eff;
-  // 文本高亮背景颜色
-  --highlight-bg-color: #d9ecff;
-}
 * {
   margin: 0;
   padding: 0;
@@ -22,7 +16,12 @@ ul {
 
 html,
 body {
-  overflow-y: overlay;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  transition: all 0.3s;
 }
 
 ::-webkit-scrollbar {

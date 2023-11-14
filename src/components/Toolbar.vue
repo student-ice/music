@@ -20,17 +20,12 @@ import IconButton from '@/components/IconButton.vue';
 
 <style lang="scss" scoped>
 .toolbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  backdrop-filter: saturate(180%) blur(30px);
+  width: 100%;
+  height: 100%;
   background-color: rgba(255, 255, 255, 0.86);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
 
   .slider {
     width: 50%;
