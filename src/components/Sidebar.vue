@@ -1,12 +1,14 @@
 <script lang="ts" setup>
+import { h } from 'vue';
+import { HomeFilled } from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-const to = (item) => {
-  if (item.key !== route.path) {
+const goto = (item) => {
+  if (item.key !== route.name) {
     router.push({
-      path: item.key,
+      name: item.key,
     });
   }
 }
@@ -14,10 +16,18 @@ const to = (item) => {
 
 <template>
   <div class="sidebar">
-    <a-menu :selectedKeys="[route.path]" @click="to">
-      <a-menu-item key="/">为你推荐</a-menu-item>
-      <a-menu-item key="/discover">发现</a-menu-item>
-    </a-menu>
+    <a-config-provider :theme="{
+      components: {
+        token: {
+          colorPrimary: '#00b96b',
+        },
+      },
+    }">
+      <a-menu :selectedKeys="[route.name]" @click="goto">
+        <a-menu-item key="index" :icon="h(HomeFilled)">为我推荐</a-menu-item>
+        <a-menu-item key="winnow">精选</a-menu-item>
+      </a-menu>
+    </a-config-provider>
   </div>
 </template>
 

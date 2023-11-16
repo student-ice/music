@@ -2,24 +2,33 @@
 import Header from '@/components/Header.vue';
 import Sidebar from './components/Sidebar.vue';
 import Toolbar from '@/components/Toolbar.vue';
+import { setTwoToneColor } from '@ant-design/icons-vue';
+setTwoToneColor('#7752FE');
 </script>
 
 <template>
   <div id="app">
-    <a-layout-header>
-      <Header />
-    </a-layout-header>
-    <a-layout class="content">
-      <a-layout-sider>
-        <Sidebar />
-      </a-layout-sider>
-      <a-layout-content>
-        <router-view></router-view>
-      </a-layout-content>
-    </a-layout>
-    <a-layout-footer>
-      <Toolbar />
-    </a-layout-footer>
+    <a-config-provider :theme="{
+      token: {
+        colorPrimary: '#7752FE',
+        colorPrimaryBg: '#dcd0ef'
+      },
+    }">
+      <a-layout-header>
+        <Header />
+      </a-layout-header>
+      <a-layout class="content">
+        <a-layout-sider>
+          <Sidebar />
+        </a-layout-sider>
+        <a-layout-content>
+          <router-view></router-view>
+        </a-layout-content>
+      </a-layout>
+      <a-layout-footer>
+        <Toolbar />
+      </a-layout-footer>
+    </a-config-provider>
   </div>
 </template>
 

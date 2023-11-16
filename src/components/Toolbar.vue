@@ -1,9 +1,9 @@
 <template>
   <div class="toolbar">
     <div class="controls">
-      <icon-button icon="src/assets/icons/previous.svg"></icon-button>
-      <icon-button icon="src/assets/icons/play.svg"></icon-button>
-      <icon-button icon="src/assets/icons/next.svg"></icon-button>
+      <icon-button icon="/src/assets/icons/previous.svg"></icon-button>
+      <icon-button icon="/src/assets/icons/play.svg"></icon-button>
+      <icon-button icon="/src/assets/icons/next.svg"></icon-button>
     </div>
 
     <div class="slider">

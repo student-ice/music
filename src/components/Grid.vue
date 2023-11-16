@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import Cover from '@/components/Cover.vue';
+
 const props = defineProps({
   items: {
     type: Array<any>,
@@ -8,7 +9,7 @@ const props = defineProps({
   },
   columnNum: {
     type: Number,
-    default: 5,
+    default: 6,
   },
   gap: {
     type: String,
@@ -42,8 +43,8 @@ const getImageUrl = (item) => {
 
 <template>
   <div class="cover-grid" :style="rowStyles">
-    <div class="item" v-for="item in items" :class="{ artist: props.type === 'artist' }">
-      <Cover :image-url="getImageUrl(item)" :type="type" />
+    <div class="item" v-for="(item, index) in items" :class="{ artist: props.type === 'artist' }">
+      <Cover :image-url="getImageUrl(item)" :type="type" :id="item.id" />
       <div class="text">
         {{ item.name }}
       </div>
@@ -69,6 +70,7 @@ const getImageUrl = (item) => {
       -webkit-line-clamp: 2;
       overflow: hidden;
       word-break: break-all;
+      user-select: none;
     }
 
     .text:hover {
