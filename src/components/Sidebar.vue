@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { h } from 'vue';
-import { HomeFilled } from '@ant-design/icons-vue';
+import { HomeFilled, StarFilled } from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
@@ -25,7 +25,7 @@ const goto = (item) => {
     }">
       <a-menu :selectedKeys="[route.name]" @click="goto">
         <a-menu-item key="index" :icon="h(HomeFilled)">为我推荐</a-menu-item>
-        <a-menu-item key="winnow">精选</a-menu-item>
+        <a-menu-item key="winnow" :icon="h(StarFilled)">精选</a-menu-item>
       </a-menu>
     </a-config-provider>
   </div>

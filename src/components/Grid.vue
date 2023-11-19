@@ -34,7 +34,7 @@ const rowStyles = computed(() => {
 const getImageUrl = (item) => {
   if (props.type === 'artist') {
     return item.img1v1Url;
-  } else if (props.type === 'discover') {
+  } else if (props.type === 'discover' || props.type === 'winnow') {
     return item.coverImgUrl;
   }
   return item.picUrl;

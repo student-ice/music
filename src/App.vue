@@ -51,7 +51,6 @@ setTwoToneColor('#7752FE');
   .ant-layout-sider {
     overflow-y: scroll;
     height: 100%;
-    text-align: center;
     line-height: 120px;
     color: #fff;
     background-color: rgb(240, 243, 246);

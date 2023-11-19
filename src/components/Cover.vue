@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, h } from 'vue';
+import { computed, ref } from 'vue';
 import { PlayCircleTwoTone } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 

@@ -7,6 +7,11 @@ const routes = [
     component: () => import('@/views/Index.vue'),
   },
   {
+    path: '/winnow',
+    name: 'winnow',
+    component: () => import('@/views/Winnow.vue'),
+  },
+  {
     path: '/discover',
     name: 'discover',
     component: () => import('@/views/Discover.vue'),

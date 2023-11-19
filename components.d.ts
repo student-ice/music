@@ -22,6 +22,8 @@ declare module 'vue' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     ASlider: typeof import('ant-design-vue/es')['Slider']
     ASpace: typeof import('ant-design-vue/es')['Space']
+    ATabPane: typeof import('ant-design-vue/es')['TabPane']
+    ATabs: typeof import('ant-design-vue/es')['Tabs']
     Cover: typeof import('./src/components/Cover.vue')['default']
     Grid: typeof import('./src/components/Grid.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
