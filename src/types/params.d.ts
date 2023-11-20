@@ -7,3 +7,7 @@ interface TopPlaylistParams extends Params {
   cat: string;
   order?: 'new' | 'hot';
 }
+
+interface PlaylistDetailParams {
+  id: string | string[];
+}

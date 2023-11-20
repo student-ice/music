@@ -20,6 +20,7 @@ declare module 'vue' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
+    ArtistLine: typeof import('./src/components/ArtistLine.vue')['default']
     ASlider: typeof import('ant-design-vue/es')['Slider']
     ASpace: typeof import('ant-design-vue/es')['Space']
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
@@ -31,6 +32,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/Sidebar.vue')['default']
+    SongList: typeof import('./src/components/SongList.vue')['default']
     Toolbar: typeof import('./src/components/Toolbar.vue')['default']
   }
 }

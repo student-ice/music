@@ -17,14 +17,24 @@ const props = defineProps({
   id: {
     type: Number,
   },
+  imgSize: {
+    type: Number,
+    default: 0
+  },
+  showPlayBtn: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const coverStyles = computed(() => {
-  let style = {};
+  let style: {} = {};
+  if (props.imgSize !== 0) {
+    style['width'] = props.imgSize + 'px';
+    style['height'] = props.imgSize + 'px';
+  }
   if (props.type === 'artist') {
-    style = {
-      'border-radius': '50%',
-    };
+    style['border-radius'] = '50%';
   }
   return style;
 });
@@ -47,7 +57,7 @@ const toPlaylist = () => {
 
 <template>
   <div class="cover" @mouseenter="focus = true" @mouseleave="focus = false">
-    <div class="hover-show" @click="toPlaylist">
+    <div class="hover-show" v-show="showPlayBtn" @click="toPlaylist">
       <PlayCircleTwoTone v-show="focus" class="play-icon" @click.stop="play" />
     </div>
     <img :src="imageUrl" :style="coverStyles" loading="lazy" />
