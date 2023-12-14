@@ -20,6 +20,7 @@ interface SongData {
   alias: string[];
   artists: SongArtist[];
   audition: null;
+  album: AlbumData;
   commentThreadId: string;
   copyFrom: string;
   copyright: number;

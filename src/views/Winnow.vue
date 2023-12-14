@@ -7,8 +7,8 @@ import { newSong } from '@/api/song';
 import { usePlayerStore } from '@/stores/player';
 
 const activeKey = ref('1');
-const playlists = ref([]);
-const newSongs = ref([]);
+const playlists = ref<PlaylistDataResult[]>([]);
+const newSongs = ref<SongResult[]>([]);
 const player = usePlayerStore();
 
 onMounted(() => {
@@ -50,7 +50,19 @@ onMounted(() => {
               class="item"
               v-for="song in newSongs"
               :key="song.id"
-              @click="player.play(song.id)"
+              @click="
+                player.addToPlaylist(
+                  {
+                    id: song.id,
+                    name: song.name,
+                    picUrl: song.picUrl,
+                    album: song.song.album.name,
+                    artists: song.song.artists[0].name,
+                    duration: song.song.duration,
+                  },
+                  true
+                )
+              "
             >
               <div class="cover">
                 <img :src="song.picUrl" alt="" loading="lazy" />

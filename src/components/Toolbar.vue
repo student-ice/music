@@ -13,8 +13,18 @@ const formatter = (value: number) => {
 
 <template>
   <div class="toolbar">
+    <div class="song-info">
+      <img :src="player.currentPicUrl" alt="" />
+      <div class="info">
+        <h3>{{ player.currentName }}</h3>
+        <p>{{ player.currentArtist }}</p>
+      </div>
+    </div>
     <div class="controls">
-      <icon-button icon="/src/assets/icons/previous.svg"></icon-button>
+      <icon-button
+        icon="/src/assets/icons/previous.svg"
+        @click="player.previous"
+      ></icon-button>
       <icon-button
         :icon="
           player.playState
@@ -23,7 +33,10 @@ const formatter = (value: number) => {
         "
         @click="player.playOrPause"
       ></icon-button>
-      <icon-button icon="/src/assets/icons/next.svg"></icon-button>
+      <icon-button
+        icon="/src/assets/icons/next.svg"
+        @click="player.next"
+      ></icon-button>
     </div>
 
     <div class="slider">
@@ -49,6 +62,52 @@ const formatter = (value: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .song-info {
+    width: 250px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      border: 1px solid #eee;
+      border-radius: 0.35em;
+      /* 阴影 */
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .info {
+      /* 固定宽度 */
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      h3 {
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      p {
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        color: #999;
+      }
+    }
+  }
 
   .slider {
     width: 50%;
