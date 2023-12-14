@@ -19,12 +19,12 @@ const props = defineProps({
   },
   imgSize: {
     type: Number,
-    default: 0
+    default: 0,
   },
   showPlayBtn: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 
 const coverStyles = computed(() => {
@@ -41,7 +41,6 @@ const coverStyles = computed(() => {
 const play = () => {
   console.log(props.id);
 };
-
 
 const toPlaylist = () => {
   if (props.type !== 'artist') {
@@ -60,7 +59,11 @@ const toPlaylist = () => {
     <div class="hover-show" v-show="showPlayBtn" @click="toPlaylist">
       <PlayCircleTwoTone v-show="focus" class="play-icon" @click.stop="play" />
     </div>
-    <img :src="imageUrl" :style="coverStyles" loading="lazy" />
+    <img
+      :src="imageUrl + '?param=400y400'"
+      :style="coverStyles"
+      loading="lazy"
+    />
   </div>
 </template>
 

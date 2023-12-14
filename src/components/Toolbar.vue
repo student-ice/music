@@ -31,9 +31,10 @@ const formatter = (value: number) => {
       <a-slider
         :min="0"
         :max="player.duration"
-        :value="player.position"
+        v-model:value="player.position"
         :step="0.1"
         :tip-formatter="formatter"
+        @afterChange="player.seek"
       ></a-slider>
       <span>{{ player.durationStr }}</span>
     </div>

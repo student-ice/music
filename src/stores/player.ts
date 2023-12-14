@@ -32,7 +32,7 @@ export const usePlayerStore = defineStore(
     })
 
     const init = () => {
-      audio.volume = 0.5;
+      audio.volume = 0.2;
     }
 
     // 播放状态
@@ -58,6 +58,11 @@ export const usePlayerStore = defineStore(
       }
     }
 
+    // 快进
+    function seek(time: number) {
+      audio.currentTime = time;
+    }
+
     function formatTime(time: number): string {
       const min = Math.floor(time / 60);
       const sec = Math.floor(time % 60);
@@ -72,7 +77,8 @@ export const usePlayerStore = defineStore(
       durationStr,
       init,
       play,
-      playOrPause
+      playOrPause,
+      seek
     }
   }
 );
