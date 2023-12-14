@@ -1,22 +1,24 @@
 <script lang="ts" setup>
-import { RightOutlined } from '@ant-design/icons-vue'
+import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
 import { ref, onMounted } from 'vue';
-import { topPlaylists } from "@/api/playlist";
+import { topPlaylists } from '@/api/playlist';
 import { newSong } from '@/api/song';
+import { usePlayerStore } from '@/stores/player';
 
 const activeKey = ref('1');
 const playlists = ref([]);
 const newSongs = ref([]);
+const player = usePlayerStore();
 
 onMounted(() => {
-  topPlaylists({ cat: "官方", limit: 12 }).then((res) => {
+  topPlaylists({ cat: '官方', limit: 12 }).then((res) => {
     playlists.value = res.playlists;
   });
   newSong({ limit: 9 }).then((res) => {
     newSongs.value = res.result;
-  })
-})
+  });
+});
 </script>
 
 <template>
@@ -44,13 +46,18 @@ onMounted(() => {
             </a-button>
           </div>
           <div class="grid">
-            <div class="item" v-for="item in newSongs" :key="item.id">
+            <div
+              class="item"
+              v-for="song in newSongs"
+              :key="song.id"
+              @click="player.play(song.id)"
+            >
               <div class="cover">
-                <img :src="item.picUrl" alt="" loading="lazy">
+                <img :src="song.picUrl" alt="" loading="lazy" />
               </div>
               <div class="text">
-                <span class="title">{{ item.name }}</span>
-                <span>{{ item.song.artists[0].name }}</span>
+                <span class="title">{{ song.name }}</span>
+                <span>{{ song.song.artists[0].name }}</span>
               </div>
             </div>
           </div>

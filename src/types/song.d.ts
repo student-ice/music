@@ -83,3 +83,50 @@ interface SongArtist {
   topicPerson: number;
   trans: string;
 }
+interface SongUrlResult {
+  code: number;
+  data: SongUrlData[];
+}
+
+interface SongUrlData {
+  br?: number;
+  canExtend?: boolean;
+  code?: number;
+  effectTypes?: null;
+  encodeType?: string;
+  expi?: number;
+  fee?: number;
+  flag?: number;
+  freeTimeTrialPrivilege?: FreeTimeTrialPrivilege;
+  freeTrialInfo?: null;
+  freeTrialPrivilege?: FreeTrialPrivilege;
+  gain?: number;
+  id?: number;
+  level?: string;
+  md5?: string;
+  payed?: number;
+  peak?: number;
+  podcastCtrp?: null;
+  rightSource?: number;
+  size?: number;
+  time?: number;
+  type?: string;
+  uf?: null;
+  url?: string;
+  urlSource?: number;
+}
+
+interface FreeTimeTrialPrivilege {
+  remainTime: number;
+  resConsumable: boolean;
+  type: number;
+  userConsumable: boolean;
+}
+
+interface FreeTrialPrivilege {
+  cannotListenReason: null;
+  listenType: null;
+  playReason: null;
+  resConsumable: boolean;
+  userConsumable: boolean;
+}

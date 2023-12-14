@@ -13,7 +13,7 @@ const props = defineProps({
   }
 })
 
-const isPlayBtn = computed(() => props.icon === '/src/assets/icons/play.svg')
+const isPlayBtn = computed(() => props.icon === '/src/assets/icons/play.svg' || props.icon === '/src/assets/icons/pause.svg')
 </script>
 
 <style lang="scss" scoped>

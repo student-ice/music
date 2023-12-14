@@ -7,3 +7,11 @@ export function newSong(params: Params): Promise<NewSongResult> {
     params,
   })
 }
+
+export async function songUrl(params: MusicUrlParams): Promise<SongUrlResult> {
+  return request({
+    url: '/song/url',
+    method: 'get',
+    params,
+  })
+}

@@ -1,22 +1,44 @@
+<script lang="ts" setup>
+import IconButton from '@/components/IconButton.vue';
+import { usePlayerStore } from '@/stores/player';
+
+const player = usePlayerStore();
+player.init();
+const formatter = (value: number) => {
+  const minutes = Math.floor(value / 60);
+  const seconds = Math.floor(value % 60);
+  return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+};
+</script>
+
 <template>
   <div class="toolbar">
     <div class="controls">
       <icon-button icon="/src/assets/icons/previous.svg"></icon-button>
-      <icon-button icon="/src/assets/icons/play.svg"></icon-button>
+      <icon-button
+        :icon="
+          player.playState
+            ? '/src/assets/icons/play.svg'
+            : '/src/assets/icons/pause.svg'
+        "
+        @click="player.playOrPause"
+      ></icon-button>
       <icon-button icon="/src/assets/icons/next.svg"></icon-button>
     </div>
 
     <div class="slider">
-      <span>00:00</span>
-      <a-slider></a-slider>
-      <span>03:00</span>
+      <span>{{ player.positionStr }}</span>
+      <a-slider
+        :min="0"
+        :max="player.duration"
+        :value="player.position"
+        :step="0.1"
+        :tip-formatter="formatter"
+      ></a-slider>
+      <span>{{ player.durationStr }}</span>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import IconButton from '@/components/IconButton.vue';
-</script>
 
 <style lang="scss" scoped>
 .toolbar {

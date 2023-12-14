@@ -11,3 +11,7 @@ interface TopPlaylistParams extends Params {
 interface PlaylistDetailParams {
   id: string | string[];
 }
+
+interface MusicUrlParams {
+  id: number | number[];
+}
