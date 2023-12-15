@@ -25,7 +25,7 @@ onMounted(() => {
   <div class="winnow">
     <a-tabs v-model:activeKey="activeKey">
       <a-tab-pane key="1" tab="精选">
-        <div class="index-row">
+        <div v-show="playlists.length !== 0" class="index-row">
           <div class="title">
             <h2>官方歌单</h2>
             <a-button>
@@ -36,7 +36,7 @@ onMounted(() => {
           </div>
           <Grid :items="playlists" type="winnow" />
         </div>
-        <div class="index-row">
+        <div v-show="newSongs.length !== 0" class="index-row">
           <div class="title">
             <h2>最新音乐</h2>
             <a-button>
@@ -48,8 +48,8 @@ onMounted(() => {
           <div class="grid">
             <div
               class="item"
-              v-for="song in newSongs"
-              :key="song.id"
+              v-for="(song, index) in newSongs"
+              :key="index"
               @click="
                 player.addToPlaylist(
                   {
@@ -65,7 +65,11 @@ onMounted(() => {
               "
             >
               <div class="cover">
-                <img :src="song.picUrl" alt="" loading="lazy" />
+                <img
+                  :src="song.picUrl + '?param=400y400'"
+                  alt=""
+                  loading="lazy"
+                />
               </div>
               <div class="text">
                 <span class="title">{{ song.name }}</span>
