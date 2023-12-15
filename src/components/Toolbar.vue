@@ -14,10 +14,10 @@ const formatter = (value: number) => {
 <template>
   <div class="toolbar">
     <div class="song-info">
-      <img :src="player.currentPicUrl" alt="" />
+      <img :src="player.currentTrackInfo.picUrl" alt="" />
       <div class="info">
-        <h3>{{ player.currentName }}</h3>
-        <p>{{ player.currentArtist }}</p>
+        <h3>{{ player.currentTrackInfo.name }}</h3>
+        <p>{{ player.currentTrackInfo.artists }}</p>
       </div>
     </div>
     <div class="controls">

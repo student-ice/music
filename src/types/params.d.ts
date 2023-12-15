@@ -15,3 +15,7 @@ interface PlaylistDetailParams {
 interface MusicUrlParams {
   id: number | number[];
 }
+
+interface SongDetailParams {
+  ids: string
+}

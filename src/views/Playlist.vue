@@ -1,21 +1,23 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { formatDate } from '@/utils/format'
+import { formatDate } from '@/utils/format';
 import { useRoute } from 'vue-router';
 import Cover from '@/components/Cover.vue';
 import SongList from '@/components/SongList.vue';
 import { playlistDetail } from '@/api/playlist';
 import { CaretRightFilled } from '@ant-design/icons-vue';
+import { usePlayerStore } from '@/stores/player';
 
 const route = useRoute();
+const player = usePlayerStore();
 const loading = ref(false);
 console.log(route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
-const songs = ref<Array<Track>>([]);
-const count = ref(0);
-const limit = ref(30);
-const offset = ref(0);
-const hasMore = ref(true);
+const songs = ref<Track[]>([]);
+const count = ref<number>(0);
+const limit = ref<number>(30);
+const offset = ref<number>(0);
+const hasMore = ref<boolean>(true);
 
 const loadMore = () => {
   loading.value = true;
@@ -25,25 +27,27 @@ const loadMore = () => {
     hasMore.value = false;
   }
   offset.value += limit.value;
-  songs.value = songs.value.concat(playlistInfo.value.tracks.slice(offset.value, offset.value + limit.value));
+  songs.value = songs.value.concat(
+    playlistInfo.value.tracks.slice(offset.value, offset.value + limit.value)
+  );
   loading.value = false;
 };
 
 onMounted(() => {
   playlistDetail({ id: route.params.id }).then((res) => {
-    playlistInfo.value = res.playlist
-    count.value = res.playlist.trackCount
+    playlistInfo.value = res.playlist;
+    count.value = res.playlist.trackCount;
     if (count.value <= limit.value) {
-      songs.value = res.playlist.tracks.slice(0, count.value)
+      songs.value = res.playlist.tracks.slice(0, count.value);
       hasMore.value = false;
       return;
     }
-    songs.value = res.playlist.tracks.slice(offset.value, limit.value)
+    songs.value = res.playlist.tracks.slice(offset.value, limit.value);
     if (offset.value + limit.value >= count.value) {
       hasMore.value = false;
     }
     offset.value += limit.value;
-    loading.value = false
+    loading.value = false;
   });
 });
 </script>
@@ -54,32 +58,45 @@ onMounted(() => {
       <Cover :image-url="playlistInfo.coverImgUrl" :img-size="260" />
       <!-- 歌单信息 -->
       <div class="playlist-info">
-        <div class="title"> <span>{{ playlistInfo.name }}</span></div>
+        <div class="title">
+          <span>{{ playlistInfo.name }}</span>
+        </div>
         <div class="description">
           <span>{{ playlistInfo.description }}</span>
         </div>
 
         <div class="creator">
-          <Cover :image-url="playlistInfo.creator.avatarUrl" type="artist" :img-size="40" :show-play-btn="false" />
+          <Cover
+            :image-url="playlistInfo.creator.avatarUrl"
+            type="artist"
+            :img-size="40"
+            :show-play-btn="false"
+          />
           <span>{{ playlistInfo.creator.nickname }}</span>
           <span>创建于{{ formatDate(playlistInfo.createTime) }}</span>
         </div>
 
         <div class="buttons">
-          <a-button size="large" type="primary">
+          <a-button
+            size="large"
+            type="primary"
+            @click="player.playPlaylistById(playlistInfo.id)"
+          >
             <template #icon>
-              <CaretRightFilled style="font-size: 21px;" />
+              <CaretRightFilled style="font-size: 21px" />
             </template>
             播放
           </a-button>
-          <a-button size="large" style="margin-left: 10px;">收藏</a-button>
+          <a-button size="large" style="margin-left: 10px">收藏</a-button>
         </div>
       </div>
     </div>
-    <SongList :songs="songs" />
+    <SongList :songs="songs" :id="playlistInfo.id" />
     <!-- 加载更多按钮 -->
     <div class="load-more" v-show="hasMore">
-      <a-button size="large" :loading="loading" @click="loadMore">加载更多</a-button>
+      <a-button size="large" :loading="loading" @click="loadMore"
+        >加载更多</a-button
+      >
     </div>
   </div>
 </template>

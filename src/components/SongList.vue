@@ -2,23 +2,41 @@
 import { formatDuration } from '@/utils/format';
 import ArtistLine from './ArtistLine.vue';
 import Cover from './Cover.vue';
+import { usePlayerStore } from '@/stores/player';
 
 defineProps({
   songs: {
     type: Array<Track>,
     required: true,
-  }
-})
+  },
+  id: {
+    type: Number,
+    default: -1,
+  },
+});
 
+const player = usePlayerStore();
 </script>
 
 <template>
   <div class="song-list">
-    <div class="song-list-item" v-for="item in songs">
-      <Cover :image-url="item.al.picUrl" :show-play-btn="false" :img-size="50" loading="lazy" />
+    <div
+      class="song-list-item"
+      v-for="(item, index) in songs"
+      :key="index"
+      @dblclick.native="player.playPlaylistById(id, index)"
+    >
+      <Cover
+        :image-url="item.al.picUrl"
+        :show-play-btn="false"
+        :img-size="50"
+        loading="lazy"
+      />
       <!-- 歌曲名称和作者 -->
       <div class="song-info">
-        <div class="song-name"><span>{{ item.name }}</span></div>
+        <div class="song-name">
+          <span>{{ item.name }}</span>
+        </div>
         <ArtistLine :artist="item.ar" class="song-artists" />
       </div>
       <!-- 专辑名 -->
