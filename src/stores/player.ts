@@ -9,7 +9,9 @@ export enum PlayState {
 }
 
 export enum PlayMode {
-  Loop = 0,
+  CurrentItemInLoop = 0,
+  Loop,
+  Random
 }
 
 interface PlaylistModel {
@@ -40,10 +42,6 @@ export const usePlayerStore = defineStore(
     const positionStr = ref<string>('00:00');
     const durationStr = ref<string>('00:00');
 
-    const init = () => {
-      audio.volume = 0.2;
-    }
-
     // 当前播放歌曲封面
     const currentPicUrl = ref<string>('/src/assets/icons/default.svg');
 
@@ -55,6 +53,12 @@ export const usePlayerStore = defineStore(
 
     // 播放状态
     const playState = ref<PlayState>(PlayState.Stopped);
+    // 播放模式图标
+    const playModeIcon = ref<string>('/src/assets/icons/loop.svg');
+
+    const init = () => {
+      audio.volume = 0.2;
+    }
 
     // 添加到播放列表,并且判断是否播放
     function addToPlaylist(item: PlaylistModel, isPlay: boolean = false) {
@@ -128,6 +132,9 @@ export const usePlayerStore = defineStore(
     // 根据播放模式，切换下一首歌曲
     function switchNextSong() {
       switch (playMode.value) {
+        case PlayMode.CurrentItemInLoop:
+          play();
+          break;
         case PlayMode.Loop:
           if (currentIndex.value === playlist.value.length - 1) {
             currentIndex.value = 0;
@@ -135,18 +142,26 @@ export const usePlayerStore = defineStore(
             currentIndex.value++;
           }
           break;
+        case PlayMode.Random:
+          currentIndex.value = Math.floor(Math.random() * playlist.value.length);
+          break;
       }
     }
 
     // 根据播放模式，切换上一首歌曲
     function switchPreviousSong() {
       switch (playMode.value) {
+        case PlayMode.CurrentItemInLoop:
+          break;
         case PlayMode.Loop:
           if (currentIndex.value === 0) {
             currentIndex.value = playlist.value.length - 1;
           } else {
             currentIndex.value--;
           }
+          break;
+        case PlayMode.Random:
+          currentIndex.value = Math.floor(Math.random() * playlist.value.length);
           break;
       }
     }
@@ -156,6 +171,24 @@ export const usePlayerStore = defineStore(
       currentPicUrl.value = playlist.value[currentIndex.value].picUrl;
       currentName.value = playlist.value[currentIndex.value].name;
       currentArtist.value = playlist.value[currentIndex.value].artists;
+    }
+
+    // 切换播放模式
+    function switchPlayMode() {
+      switch (playMode.value) {
+        case PlayMode.CurrentItemInLoop:
+          playMode.value = PlayMode.Loop;
+          playModeIcon.value = '/src/assets/icons/loop.svg';
+          break;
+        case PlayMode.Loop:
+          playMode.value = PlayMode.Random;
+          playModeIcon.value = '/src/assets/icons/random.svg';
+          break;
+        case PlayMode.Random:
+          playMode.value = PlayMode.CurrentItemInLoop;
+          playModeIcon.value = '/src/assets/icons/currentiteminloop.svg';
+          break;
+      }
     }
 
     function formatTime(time: number): string {
@@ -187,6 +220,7 @@ export const usePlayerStore = defineStore(
       playlistCount,
       playState,
       playMode,
+      playModeIcon,
       position,
       duration,
       positionStr,
@@ -200,7 +234,8 @@ export const usePlayerStore = defineStore(
       seek,
       addToPlaylist,
       previous,
-      next
+      next,
+      switchPlayMode
     }
   }
 );

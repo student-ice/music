@@ -51,6 +51,12 @@ const formatter = (value: number) => {
       ></a-slider>
       <span>{{ player.durationStr }}</span>
     </div>
+    <!-- 播放模式按钮 -->
+    <icon-button
+      class="play-mode-btn"
+      :icon="player.playModeIcon"
+      @click="player.switchPlayMode"
+    ></icon-button>
   </div>
 </template>
 
@@ -131,6 +137,10 @@ const formatter = (value: number) => {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .play-mode-btn {
+    margin-left: 10px;
   }
 }
 </style>

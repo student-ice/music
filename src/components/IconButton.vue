@@ -9,11 +9,15 @@ import { computed } from 'vue';
 const props = defineProps({
   icon: {
     type: String,
-    default: ''
-  }
-})
+    default: '',
+  },
+});
 
-const isPlayBtn = computed(() => props.icon === '/src/assets/icons/play.svg' || props.icon === '/src/assets/icons/pause.svg')
+const isPlayBtn = computed(
+  () =>
+    props.icon === '/src/assets/icons/play.svg' ||
+    props.icon === '/src/assets/icons/pause.svg'
+);
 </script>
 
 <style lang="scss" scoped>
@@ -37,8 +41,8 @@ const isPlayBtn = computed(() => props.icon === '/src/assets/icons/play.svg' || 
   }
 
   img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
 }
 
