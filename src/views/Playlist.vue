@@ -2,53 +2,55 @@
 import { ref, onMounted } from 'vue';
 import { formatDate } from '@/utils/format';
 import { useRoute } from 'vue-router';
-import Cover from '@/components/Cover.vue';
-import SongList from '@/components/SongList.vue';
-import { playlistDetail } from '@/api/playlist';
+import { playlistDetail, playlistTrackAll } from '@/api/playlist';
 import { CaretRightFilled } from '@ant-design/icons-vue';
 import { usePlayerStore } from '@/stores/player';
+import Cover from '@/components/Cover.vue';
+import SongList from '@/components/SongList.vue';
 
 const route = useRoute();
 const player = usePlayerStore();
 const loading = ref(false);
-console.log(route.params.id);
+console.log('歌单id: ', route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
 const songs = ref<Track[]>([]);
 const count = ref<number>(0);
-const limit = ref<number>(30);
+const limit = ref<number>(50);
 const offset = ref<number>(0);
 const hasMore = ref<boolean>(true);
 
-const loadMore = () => {
+const loadMoreSongs = async () => {
   loading.value = true;
-  // 判断剩余歌曲是否大于limit
-  if (count.value - offset.value < limit.value) {
+  if (offset.value + limit.value >= count.value) {
     limit.value = count.value - offset.value;
-    hasMore.value = false;
   }
-  offset.value += limit.value;
-  songs.value = songs.value.concat(
-    playlistInfo.value.tracks.slice(offset.value, offset.value + limit.value)
-  );
-  loading.value = false;
+  try {
+    const res = await playlistTrackAll({
+      id: Number(route.params.id),
+      limit: limit.value,
+      offset: offset.value,
+    });
+    songs.value.push(...res.songs);
+    offset.value += limit.value;
+    if (offset.value >= count.value) {
+      hasMore.value = false;
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
 };
 
-onMounted(() => {
-  playlistDetail({ id: route.params.id }).then((res) => {
-    playlistInfo.value = res.playlist;
-    count.value = res.playlist.trackCount;
-    if (count.value <= limit.value) {
-      songs.value = res.playlist.tracks.slice(0, count.value);
-      hasMore.value = false;
-      return;
-    }
-    songs.value = res.playlist.tracks.slice(offset.value, limit.value);
-    if (offset.value + limit.value >= count.value) {
-      hasMore.value = false;
-    }
-    offset.value += limit.value;
-    loading.value = false;
-  });
+onMounted(async () => {
+  const res = await playlistDetail({ id: route.params.id });
+  playlistInfo.value = res.playlist;
+  count.value = res.playlist.trackCount;
+  if (count.value < limit.value) {
+    limit.value = count.value;
+    hasMore.value = false;
+  }
+  await loadMoreSongs();
 });
 </script>
 <template>
@@ -94,7 +96,7 @@ onMounted(() => {
     <SongList :songs="songs" :id="playlistInfo.id" />
     <!-- 加载更多按钮 -->
     <div class="load-more" v-show="hasMore">
-      <a-button size="large" :loading="loading" @click="loadMore"
+      <a-button size="large" :loading="loading" @click="loadMoreSongs"
         >加载更多</a-button
       >
     </div>
