@@ -66,6 +66,11 @@ export const usePlayerStore = defineStore(
 
     // 添加到播放列表,并且判断是否播放
     function addToPlaylist(id: number, isPlay: boolean = false) {
+      if (currentPlaylistId.value !== 'single') {
+        playlist.value = [];
+        playlistCount.value = 0;
+        currentIndex.value = -1;
+      }
       // 判断是否已经存在
       const index = playlist.value.findIndex(v => v.id === id);
       if (index !== -1) {
@@ -96,11 +101,11 @@ export const usePlayerStore = defineStore(
         return;
       }
       // 执行到这里，说明是新的歌单
-      currentIndex.value = -1;
       playlistDetail({ id: id.toString() }).then(res => {
         const ids = res.playlist.trackIds.map(v => v.id);
         playlist.value = ids.map(v => { return { id: v } });
         playlistCount.value = playlist.value.length;
+        currentIndex.value = -1;
         currentPlaylistId.value = id.toString();
         if (index === -1) {
           playAtIndex(0);
@@ -169,6 +174,10 @@ export const usePlayerStore = defineStore(
           break;
         case PlayMode.Loop:
           if (currentIndex.value === playlist.value.length - 1) {
+            if (playlist.value.length === 1) {
+              play();
+              return;
+            }
             currentIndex.value = 0;
           } else {
             currentIndex.value++;
@@ -256,7 +265,7 @@ export const usePlayerStore = defineStore(
       console.log('currentIndex changed:', "new ", newValue, " old ", oldValue)
       if (newValue === -1) return;
       updateSongInfo();
-    })
+    }, { deep: true })
 
     return {
       currentTrackInfo,
