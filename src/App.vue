@@ -2,18 +2,24 @@
 import Header from '@/components/Header.vue';
 import Sidebar from './components/Sidebar.vue';
 import Toolbar from '@/components/Toolbar.vue';
+import PlayerQueue from './components/PlayerQueue.vue';
 import { setTwoToneColor } from '@ant-design/icons-vue';
+import { usePlayerStore } from '@/stores/player';
+
+const player = usePlayerStore();
 setTwoToneColor('#7752FE');
 </script>
 
 <template>
   <div id="app">
-    <a-config-provider :theme="{
-      token: {
-        colorPrimary: '#7752FE',
-        colorPrimaryBg: '#dcd0ef'
-      },
-    }">
+    <a-config-provider
+      :theme="{
+        token: {
+          colorPrimary: '#7752FE',
+          colorPrimaryBg: '#dcd0ef',
+        },
+      }"
+    >
       <a-layout-header>
         <Header />
       </a-layout-header>
@@ -23,6 +29,9 @@ setTwoToneColor('#7752FE');
         </a-layout-sider>
         <a-layout-content>
           <router-view></router-view>
+          <transition name="fade">
+            <PlayerQueue v-show="player.showPlayerQueue" />
+          </transition>
         </a-layout-content>
       </a-layout>
       <a-layout-footer>
@@ -61,6 +70,33 @@ setTwoToneColor('#7752FE');
     flex: 1;
     overflow-y: scroll;
     padding: 10px 50px 10px 50px;
+
+    // 播放列表在屏幕最右侧，现在希望显示的时候能有一个从右侧移出的动画
+
+    .fade-enter-from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    .fade-enter-active {
+      transition: all 0.4s;
+    }
+
+    .fade-enter-to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    // 播放列表在屏幕最右侧，现在希望隐藏的时候能有一个向右侧移出的动画
+    .fade-leave-from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .fade-leave-active {
+      transition: all 0.4s;
+    }
+    .fade-leave-to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
   }
 }
 

@@ -29,25 +29,5 @@ export async function songDetail(params: SongDetailParams): Promise<SongDetailRe
 }
 export interface SongDetailResult {
   code: number;
-  songs: SongDetailSongs[];
-}
-
-export interface SongDetailSongs {
-  al?: SongDetailSongsAl;
-  ar?: SongDetailSongsAr[];
-  dt?: number;
-  id?: number;
-  name?: string;
-  publishTime?: number;
-}
-
-export interface SongDetailSongsAl {
-  id: number;
-  name: string;
-  picUrl: string;
-}
-
-export interface SongDetailSongsAr {
-  id?: number;
-  name?: string;
+  songs: Track[];
 }

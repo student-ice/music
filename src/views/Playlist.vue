@@ -2,55 +2,41 @@
 import { ref, onMounted } from 'vue';
 import { formatDate } from '@/utils/format';
 import { useRoute } from 'vue-router';
-import { playlistDetail, playlistTrackAll } from '@/api/playlist';
+import { playlistDetail } from '@/api/playlist';
 import { CaretRightFilled } from '@ant-design/icons-vue';
 import { usePlayerStore } from '@/stores/player';
 import Cover from '@/components/Cover.vue';
 import SongList from '@/components/SongList.vue';
+import { songDetail } from '@/api/song';
 
 const route = useRoute();
 const player = usePlayerStore();
-const loading = ref(false);
+const loading = ref<boolean>(false);
 console.log('歌单id: ', route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
 const songs = ref<Track[]>([]);
 const count = ref<number>(0);
-const limit = ref<number>(50);
-const offset = ref<number>(0);
-const hasMore = ref<boolean>(true);
 
-const loadMoreSongs = async () => {
-  loading.value = true;
-  if (offset.value + limit.value >= count.value) {
-    limit.value = count.value - offset.value;
-  }
-  try {
-    const res = await playlistTrackAll({
-      id: Number(route.params.id),
-      limit: limit.value,
-      offset: offset.value,
-    });
-    songs.value.push(...res.songs);
-    offset.value += limit.value;
-    if (offset.value >= count.value) {
-      hasMore.value = false;
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    loading.value = false;
-  }
+const loadSongs = async () => {
+  let ids = [];
+  playlistInfo.value.trackIds.forEach((item) => {
+    ids.push(item.id);
+  });
+  const _songs = await songDetail({
+    ids: ids.join(','),
+  });
+  console.log(_songs.songs);
+  songs.value = _songs.songs;
+  loading.value = false;
 };
 
 onMounted(async () => {
+  loading.value = true;
   const res = await playlistDetail({ id: route.params.id });
   playlistInfo.value = res.playlist;
   count.value = res.playlist.trackCount;
-  if (count.value < limit.value) {
-    limit.value = count.value;
-    hasMore.value = false;
-  }
-  await loadMoreSongs();
+  console.log(count.value);
+  await loadSongs();
 });
 </script>
 <template>
@@ -79,11 +65,7 @@ onMounted(async () => {
         </div>
 
         <div class="buttons">
-          <a-button
-            size="large"
-            type="primary"
-            @click="player.playPlaylistById(playlistInfo.id)"
-          >
+          <a-button size="large" type="primary">
             <template #icon>
               <CaretRightFilled style="font-size: 21px" />
             </template>
@@ -94,12 +76,6 @@ onMounted(async () => {
       </div>
     </div>
     <SongList :songs="songs" :id="playlistInfo.id" />
-    <!-- 加载更多按钮 -->
-    <div class="load-more" v-show="hasMore">
-      <a-button size="large" :loading="loading" @click="loadMoreSongs"
-        >加载更多</a-button
-      >
-    </div>
   </div>
 </template>
 

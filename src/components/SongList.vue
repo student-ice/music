@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { formatDuration } from '@/utils/format';
 import ArtistLine from './ArtistLine.vue';
 import Cover from './Cover.vue';
 import { usePlayerStore } from '@/stores/player';
 
-defineProps({
+const props = defineProps({
   songs: {
     type: Array<Track>,
     required: true,
@@ -16,18 +17,59 @@ defineProps({
 });
 
 const player = usePlayerStore();
+
+const pageNumber = ref<number>(1);
+
+const loadSize = ref<number>(50);
+
+// 双击歌曲
+const songItemDbClicked = (index: number) => {
+  player.addTracks(props.id, getSongs(), index);
+};
+
+const getSongs = () => {
+  let songs = [];
+  props.songs.forEach((item) => {
+    songs.push({
+      id: item.id,
+      name: item.name,
+      picUrl: item.al.picUrl,
+      album: item.al.name,
+      artists: item.ar.map((artist) => artist.name).join('/'),
+      duration: item.dt,
+    });
+  });
+  return songs;
+};
+
+const pageNumberChanged = (page: number) => {
+  pageNumber.value = page;
+  console.log(page, pageNumber.value);
+  // 滚动到顶部 .ant-layout-content
+  const content = document.querySelector('.ant-layout-content');
+  if (content) {
+    content.scrollTop = 0;
+  }
+};
 </script>
 
 <template>
   <div class="song-list">
     <div
-      class="song-list-item"
-      v-for="(item, index) in songs"
+      v-for="(song, index) in songs.slice(
+        (pageNumber - 1) * loadSize,
+        (pageNumber - 1) * loadSize + loadSize
+      )"
       :key="index"
-      @dblclick.native="player.playPlaylistById(id, index)"
+      :class="
+        player.playlist.getCurrentTrackId() === song.id
+          ? 'song-list-item active'
+          : 'song-list-item'
+      "
+      @dblclick.native="songItemDbClicked(index)"
     >
       <Cover
-        :image-url="item.al.picUrl"
+        :image-url="song.al.picUrl"
         :show-play-btn="false"
         :img-size="50"
         loading="lazy"
@@ -35,19 +77,27 @@ const player = usePlayerStore();
       <!-- 歌曲名称和作者 -->
       <div class="song-info">
         <div class="song-name">
-          <span>{{ item.name }}</span>
+          <span>{{ song.name }}</span>
         </div>
-        <ArtistLine :artist="item.ar" class="song-artists" />
+        <ArtistLine :artist="song.ar" class="song-artists" />
       </div>
       <!-- 专辑名 -->
       <div class="song-album">
-        <span>{{ item.al.name }}</span>
+        <span>{{ song.al.name }}</span>
       </div>
       <!-- 歌曲时长 -->
       <div class="song-duration">
-        <span>{{ formatDuration(item.dt) }}</span>
+        <span>{{ formatDuration(song.dt) }}</span>
       </div>
     </div>
+    <a-pagination
+      v-model:current="pageNumber"
+      :total="songs.length"
+      :defaultPageSize="50"
+      :showSizeChanger="false"
+      show-less-items
+      @change="pageNumberChanged"
+    />
   </div>
 </template>
 
@@ -101,6 +151,14 @@ const player = usePlayerStore();
     &:hover {
       background-color: rgba(0, 0, 0, 0.06);
     }
+
+    &.active {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+  }
+  .ant-pagination {
+    margin-top: 20px;
+    text-align: center;
   }
 }
 </style>

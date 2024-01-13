@@ -3,11 +3,17 @@ import IconButton from '@/components/IconButton.vue';
 import { usePlayerStore } from '@/stores/player';
 
 const player = usePlayerStore();
+
 player.init();
+
 const formatter = (value: number) => {
   const minutes = Math.floor(value / 60);
   const seconds = Math.floor(value % 60);
   return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+};
+
+const playerQueueBtnClicked = () => {
+  player.showPlayerQueue = !player.showPlayerQueue;
 };
 </script>
 
@@ -54,9 +60,15 @@ const formatter = (value: number) => {
     <!-- 播放模式按钮 -->
     <icon-button
       class="play-mode-btn"
-      :icon="player.playModeIcon"
+      :icon="player.playlist.playModeIcon"
       @click="player.switchPlayMode"
     ></icon-button>
+    <icon-button
+      icon="/src/assets/icons/player-queue.svg"
+      @click="playerQueueBtnClicked"
+    >
+      播放列表
+    </icon-button>
   </div>
 </template>
 

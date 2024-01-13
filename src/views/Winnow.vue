@@ -50,7 +50,19 @@ onMounted(() => {
               class="item"
               v-for="(song, index) in newSongs"
               :key="index"
-              @click="player.addToPlaylist(song.id, true)"
+              @dblclick.native="
+                player.addToPlaylist(
+                  {
+                    id: song.id,
+                    name: song.name,
+                    picUrl: song.picUrl,
+                    album: song.song.album.name,
+                    artists: song.song.artists[0].name,
+                    duration: song.song.duration,
+                  },
+                  true
+                )
+              "
             >
               <div class="cover">
                 <img

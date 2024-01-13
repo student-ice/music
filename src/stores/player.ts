@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { songUrl, songDetail } from '@/api/song';
 import { playlistDetail } from '@/api/playlist';
+import { usePlaylistStore, TrackModel } from './playlist';
 
 export enum PlayState {
   Playing = 0,
@@ -9,30 +10,15 @@ export enum PlayState {
   Stopped
 }
 
-export enum PlayMode {
-  CurrentItemInLoop = 0,
-  Loop,
-  Random
-}
-
-export interface TrackInfo {
-  id: number;
-  name: string;
-  picUrl: string;
-  album: string;
-  artists: string;
-  duration: number;
-}
-
 export const usePlayerStore = defineStore(
   'player', () => {
     const audio = new Audio();
 
     // 播放列表
-    const playlist = ref<{ id: number }[]>([]);
+    const playlist = usePlaylistStore();
 
     // 播放列表歌曲信息
-    const currentTrackInfo = ref<TrackInfo>({
+    const currentTrackInfo = ref<TrackModel>({
       id: 0,
       name: '未知歌曲',
       picUrl: '/src/assets/icons/default.svg',
@@ -40,14 +26,7 @@ export const usePlayerStore = defineStore(
       artists: '未知歌手',
       duration: 0
     });
-    // 当前播放列表ID
-    const currentPlaylistId = ref<string>('0');
-    // 当前播放索引
-    const currentIndex = ref<number>(-1);
-    // 播放列表歌曲数量
-    const playlistCount = ref<number>(0);
-    // 播放模式
-    const playMode = ref<PlayMode>(PlayMode.Loop);
+
     // 当前播放进度
     const position = ref<number>(0);
     // 当前播放时长
@@ -57,42 +36,33 @@ export const usePlayerStore = defineStore(
 
     // 播放状态
     const playState = ref<PlayState>(PlayState.Stopped);
-    // 播放模式图标
-    const playModeIcon = ref<string>('/src/assets/icons/loop.svg');
+
+    // 显示播放列表
+    const showPlayerQueue = ref<boolean>(false);
 
     const init = () => {
       audio.volume = 0.2;
     }
 
     // 添加到播放列表,并且判断是否播放
-    function addToPlaylist(id: number, isPlay: boolean = false) {
-      if (currentPlaylistId.value !== 'single') {
-        playlist.value = [];
-        playlistCount.value = 0;
-        currentIndex.value = -1;
+    function addToPlaylist(track: TrackModel, isPlay: boolean = false) {
+      if (playlist.playlistId !== 'single') {
+        playlist.clearPlaylist();
       }
-      // 判断是否已经存在
-      const index = playlist.value.findIndex(v => v.id === id);
-      if (index !== -1) {
-        if (isPlay) {
-          playAtIndex(index);
-        }
-        return;
-      }
-      playlist.value.push({ id: id });
-      playlistCount.value++;
-      currentPlaylistId.value = 'single';
+
+      playlist.addTrack(track)
+      playlist.playlistId = 'single';
       if (isPlay) {
-        if (playlistCount.value >= 1) {
-          playAtIndex(playlistCount.value - 1);
+        if (playlist.playlistCount >= 1) {
+          playAtIndex(playlist.playlistCount - 1);
         }
       }
-      console.log("播放列表歌曲数: " + playlistCount.value)
+      console.log("播放列表歌曲数: " + playlist.playlistCount)
     }
 
-    // 根据歌单ID添加到播放列表，并播放
-    function playPlaylistById(id: number, index: number = -1) {
-      if (currentPlaylistId.value === id.toString()) {
+    // 添加播放列表歌曲到播放列表，并播放
+    function addTracks(id: number, songs: TrackModel[], index: number = -1) {
+      if (playlist.playlistId === id.toString()) {
         if (index === -1) {
           playAtIndex(0);
         } else {
@@ -101,30 +71,24 @@ export const usePlayerStore = defineStore(
         return;
       }
       // 执行到这里，说明是新的歌单
-      playlistDetail({ id: id.toString() }).then(res => {
-        const ids = res.playlist.trackIds.map(v => v.id);
-        playlist.value = ids.map(v => { return { id: v } });
-        playlistCount.value = playlist.value.length;
-        currentIndex.value = -1;
-        currentPlaylistId.value = id.toString();
-        if (index === -1) {
-          playAtIndex(0);
-        } else {
-          playAtIndex(index);
-        }
-        console.log("播放列表歌曲数: " + playlistCount.value)
-      })
-
+      playlist.clearPlaylist();
+      playlist.playlistId = id.toString();
+      playlist.addTracks(songs);
+      if (index === -1) {
+        playAtIndex(0);
+      } else {
+        playAtIndex(index);
+      }
     }
 
     // 播放指定索引的歌曲
     function playAtIndex(index: number) {
-      currentIndex.value = index;
+      playlist.currentIndex = index;
       play();
     }
 
     function play() {
-      songUrl({ id: playlist.value[currentIndex.value].id }).then(res => {
+      songUrl({ id: playlist.getCurrentTrackId() }).then(res => {
         if (res.data[0].url) {
           audio.src = res.data[0].url;
           audio.play().catch(err => {
@@ -140,13 +104,13 @@ export const usePlayerStore = defineStore(
 
     // 上一首
     function previous() {
-      switchPreviousSong();
+      playlist.previous();
       play();
     }
 
     // 下一首
     function next() {
-      switchNextSong();
+      playlist.next();
       play();
     }
 
@@ -166,51 +130,9 @@ export const usePlayerStore = defineStore(
       audio.currentTime = time;
     }
 
-    // 根据播放模式，切换下一首歌曲
-    function switchNextSong() {
-      switch (playMode.value) {
-        case PlayMode.CurrentItemInLoop:
-          play();
-          break;
-        case PlayMode.Loop:
-          if (currentIndex.value === playlist.value.length - 1) {
-            if (playlist.value.length === 1) {
-              play();
-              return;
-            }
-            currentIndex.value = 0;
-          } else {
-            currentIndex.value++;
-          }
-          break;
-        case PlayMode.Random:
-          currentIndex.value = Math.floor(Math.random() * playlist.value.length);
-          break;
-      }
-    }
-
-    // 根据播放模式，切换上一首歌曲
-    function switchPreviousSong() {
-      switch (playMode.value) {
-        case PlayMode.CurrentItemInLoop:
-          break;
-        case PlayMode.Loop:
-          if (currentIndex.value === 0) {
-            currentIndex.value = playlist.value.length - 1;
-          } else {
-            currentIndex.value--;
-          }
-          break;
-        case PlayMode.Random:
-          currentIndex.value = Math.floor(Math.random() * playlist.value.length);
-          break;
-      }
-    }
-
     // 更新歌曲信息
-    // 必须先保证 currentIndex 切换后，再调用此函数获取对应的歌曲信息
     function updateSongInfo() {
-      songDetail({ ids: playlist.value[currentIndex.value].id.toString() }).then(res => {
+      songDetail({ ids: playlist.getCurrentTrackId().toString() }).then(res => {
         const song = res.songs[0];
         currentTrackInfo.value = {
           id: song.id,
@@ -225,20 +147,7 @@ export const usePlayerStore = defineStore(
 
     // 切换播放模式
     function switchPlayMode() {
-      switch (playMode.value) {
-        case PlayMode.CurrentItemInLoop:
-          playMode.value = PlayMode.Loop;
-          playModeIcon.value = '/src/assets/icons/loop.svg';
-          break;
-        case PlayMode.Loop:
-          playMode.value = PlayMode.Random;
-          playModeIcon.value = '/src/assets/icons/random.svg';
-          break;
-        case PlayMode.Random:
-          playMode.value = PlayMode.CurrentItemInLoop;
-          playModeIcon.value = '/src/assets/icons/currentiteminloop.svg';
-          break;
-      }
+      playlist.switchPlayMode();
     }
 
     function formatTime(time: number): string {
@@ -258,26 +167,25 @@ export const usePlayerStore = defineStore(
       durationStr.value = formatTime(audio.duration);
     })
     audio.addEventListener('ended', () => {
-      switchNextSong()
+      next();
     })
 
-    watch(currentIndex, async (newValue, oldValue) => {
+    watch(() => { return playlist.currentIndex }, async (newValue, oldValue) => {
       console.log('currentIndex changed:', "new ", newValue, " old ", oldValue)
+      console.log('播放列表歌曲数量: ' + playlist.playlistCount)
       if (newValue === -1) return;
       updateSongInfo();
     }, { deep: true })
 
     return {
+      playlist,
       currentTrackInfo,
-      currentIndex,
-      playlistCount,
       playState,
-      playMode,
-      playModeIcon,
       position,
       duration,
       positionStr,
       durationStr,
+      showPlayerQueue,
       init,
       play,
       playOrPause,
@@ -287,7 +195,7 @@ export const usePlayerStore = defineStore(
       next,
       switchPlayMode,
       playAtIndex,
-      playPlaylistById
+      addTracks
     }
   }
 );
