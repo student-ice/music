@@ -1,9 +1,18 @@
 import axios from 'axios';
+import { InternalAxiosRequestConfig } from 'axios';
+import { getCookie } from './auth';
 
 let baseUrl = '';
 
 if (process.env.NODE_ENV === 'development') {
   baseUrl = 'http://localhost:4000';
+}
+
+// 给axios扩展一些属性
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    noCookie?: boolean;
+  }
 }
 
 const server = axios.create({
@@ -12,7 +21,15 @@ const server = axios.create({
 });
 // 请求拦截器
 server.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig<any>) => {
+    if (!config.params)
+      config.params = {};
+    if (!config.noCookie && getCookie('MUSIC_U') !== null) {
+      config.params.cookie = `MUSIC_U=${getCookie('MUSIC_U')}`;
+    }
+    if (config.noCookie) {
+      config.params.noCookie = true;
+    }
     return config;
   },
   (err: any) => {

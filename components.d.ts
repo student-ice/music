@@ -7,11 +7,13 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
     ACarousel: typeof import('ant-design-vue/es')['Carousel']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
-    ADrawer: typeof import('ant-design-vue/es')['Drawer']
+    ADropdown: typeof import('ant-design-vue/es')['Dropdown']
+    ADropdownButton: typeof import('ant-design-vue/es')['DropdownButton']
     AImage: typeof import('ant-design-vue/es')['Image']
     AInputSearch: typeof import('ant-design-vue/es')['InputSearch']
     ALayout: typeof import('ant-design-vue/es')['Layout']
@@ -21,7 +23,9 @@ declare module 'vue' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
+    AModal: typeof import('ant-design-vue/es')['Modal']
     APagination: typeof import('ant-design-vue/es')['Pagination']
+    AQrcode: typeof import('ant-design-vue/es')['QRCode']
     ArtistLine: typeof import('./src/components/ArtistLine.vue')['default']
     ASlider: typeof import('ant-design-vue/es')['Slider']
     ASpace: typeof import('ant-design-vue/es')['Space']
@@ -31,6 +35,8 @@ declare module 'vue' {
     Grid: typeof import('./src/components/Grid.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     IconButton: typeof import('./src/components/IconButton.vue')['default']
+    Login: typeof import('./src/components/Login.vue')['default']
+    LoginQRCode: typeof import('./src/components/LoginQRCode.vue')['default']
     PlayerQueue: typeof import('./src/components/PlayerQueue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

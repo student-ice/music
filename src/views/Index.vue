@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { recommendPlaylists } from '@/api/playlist';
 import { topArtists } from '@/api/artist';
 import { banner } from '@/api/banner';
-import { RightOutlined } from '@ant-design/icons-vue'
+import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
 
 const bannerRes = ref([]);
@@ -32,20 +32,12 @@ onMounted(() => {
       <div class="left">
         <a-carousel autoplay>
           <div class="banner" v-for="item in bannerRes">
-            <img :src="item.imageUrl" alt="">
+            <img :src="item.imageUrl" alt="" />
           </div>
         </a-carousel>
       </div>
       <!-- 中间间距30 -->
       <a-space size="30"></a-space>
-      <!-- 右边私人漫游 -->
-      <div class="right">
-        <a-card title="私人FM">
-          <p>私人FM</p>
-          <p>听歌识曲，发现音乐</p>
-          <a-button type="primary">开始播放</a-button>
-        </a-card>
-      </div>
     </div>
     <div class="index-row">
       <div class="title">
@@ -94,7 +86,6 @@ onMounted(() => {
     height: 200px;
 
     .ant-carousel {
-
       img {
         width: 100%;
         height: 200px;
@@ -107,10 +98,6 @@ onMounted(() => {
 .right {
   width: calc(50% - 15px);
   height: 200px;
-
-  .ant-card {
-    height: 100%;
-  }
 }
 
 .first-row {

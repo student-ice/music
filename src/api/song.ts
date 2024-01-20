@@ -5,6 +5,7 @@ export function newSong(params: Params): Promise<NewSongResult> {
   return request({
     url: '/personalized/newsong',
     method: 'get',
+    noCookie: true,
     params,
   })
 }
@@ -23,6 +24,7 @@ export async function songDetail(params: SongDetailParams): Promise<SongDetailRe
   return request({
     url: '/song/detail',
     method: 'get',
+    noCookie: true,
     params,
   })
 

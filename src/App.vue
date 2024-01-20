@@ -49,7 +49,6 @@ setTwoToneColor('#7752FE');
   text-align: center;
   color: #fff;
   height: 64px;
-  line-height: 64px;
 }
 
 .ant-layout.content {
@@ -71,8 +70,6 @@ setTwoToneColor('#7752FE');
     overflow-y: scroll;
     padding: 10px 50px 10px 50px;
 
-    // 播放列表在屏幕最右侧，现在希望显示的时候能有一个从右侧移出的动画
-
     .fade-enter-from {
       transform: translateX(100%);
       opacity: 0;
@@ -85,7 +82,6 @@ setTwoToneColor('#7752FE');
       transform: translateX(0);
       opacity: 1;
     }
-    // 播放列表在屏幕最右侧，现在希望隐藏的时候能有一个向右侧移出的动画
     .fade-leave-from {
       transform: translateX(0);
       opacity: 1;
