@@ -5,6 +5,7 @@ import Toolbar from '@/components/Toolbar.vue';
 import PlayerQueue from './components/PlayerQueue.vue';
 import { setTwoToneColor } from '@ant-design/icons-vue';
 import { usePlayerStore } from '@/stores/player';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
 
 const player = usePlayerStore();
 setTwoToneColor('#7752FE');
@@ -13,6 +14,7 @@ setTwoToneColor('#7752FE');
 <template>
   <div id="app">
     <a-config-provider
+      :locale="zhCN"
       :theme="{
         token: {
           colorPrimary: '#7752FE',
