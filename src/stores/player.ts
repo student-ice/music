@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { songUrl, songDetail } from '@/api/song';
-import { playlistDetail } from '@/api/playlist';
 import { usePlaylistStore, TrackModel } from './playlist';
+import { getPrivateFM } from '@/api/recommend';
 
 export enum PlayState {
   Playing = 0,
@@ -40,12 +40,35 @@ export const usePlayerStore = defineStore(
     // 显示播放列表
     const showPlayerQueue = ref<boolean>(false);
 
-    const init = () => {
+    // 是否正在播放私人FM
+    const isPrivateFM = ref<boolean>(false);
+    // 私人FM当前歌曲信息
+    const privateFMTrack = ref<TrackModel>({
+      id: 0,
+      name: '未知歌曲',
+      picUrl: '/src/assets/icons/default.svg',
+      album: '未知专辑',
+      artists: '未知歌手',
+      duration: 0
+    })
+
+    const init = async () => {
       audio.volume = 0.2;
+      const { data } = await getPrivateFM();
+      privateFMTrack.value = {
+        id: data[0].id,
+        name: data[0].name,
+        picUrl: data[0].album.picUrl,
+        album: data[0].album.name,
+        artists: data[0].artists.map(v => v.name).join(' / '),
+        duration: data[0].duration
+      }
+      console.log('初始化播放器完成');
     }
 
     // 添加到播放列表,并且判断是否播放
     function addToPlaylist(track: TrackModel, isPlay: boolean = false) {
+      isPrivateFM.value = false;
       if (playlist.playlistId !== 'single') {
         playlist.clearPlaylist();
       }
@@ -62,6 +85,7 @@ export const usePlayerStore = defineStore(
 
     // 添加播放列表歌曲到播放列表，并播放
     function addTracks(id: number, songs: TrackModel[], index: number = -1) {
+      isPrivateFM.value = false;
       if (playlist.playlistId === id.toString()) {
         if (index === -1) {
           playAtIndex(0);
@@ -81,6 +105,32 @@ export const usePlayerStore = defineStore(
       }
     }
 
+    // 播放私人FM下一首
+    async function nextPrivateFM() {
+      const { data } = await getPrivateFM()
+      privateFMTrack.value = {
+        id: data[0].id,
+        name: data[0].name,
+        picUrl: data[0].album.picUrl,
+        album: data[0].album.name,
+        artists: data[0].artists.map(v => v.name).join(' / '),
+        duration: data[0].duration
+      }
+      currentTrackInfo.value = privateFMTrack.value;
+      play();
+    }
+
+    // 播放私人FM
+    async function playPrivateFM() {
+      isPrivateFM.value = true;
+      if (currentTrackInfo.value.id !== privateFMTrack.value.id) {
+        currentTrackInfo.value = privateFMTrack.value;
+        play();
+      } else {
+        playOrPause();
+      }
+    }
+
     // 播放指定索引的歌曲
     function playAtIndex(index: number) {
       playlist.currentIndex = index;
@@ -88,7 +138,13 @@ export const usePlayerStore = defineStore(
     }
 
     function play() {
-      songUrl({ id: playlist.getCurrentTrackId() }).then(res => {
+      let id: number = 0;
+      if (isPrivateFM.value) {
+        id = privateFMTrack.value.id;
+      } else {
+        id = playlist.getCurrentTrackId();
+      }
+      songUrl({ id }).then(res => {
         if (res.data[0].url) {
           audio.src = res.data[0].url;
           audio.play().catch(err => {
@@ -110,6 +166,10 @@ export const usePlayerStore = defineStore(
 
     // 下一首
     function next() {
+      if (isPrivateFM.value) {
+        nextPrivateFM();
+        return;
+      }
       playlist.next();
       play();
     }
@@ -132,7 +192,13 @@ export const usePlayerStore = defineStore(
 
     // 更新歌曲信息
     function updateSongInfo() {
-      songDetail({ ids: playlist.getCurrentTrackId().toString() }).then(res => {
+      let ids: string = '';
+      if (isPrivateFM.value) {
+        ids = privateFMTrack.value.id.toString();
+      } else {
+        ids = playlist.getCurrentTrackId().toString();
+      }
+      songDetail({ ids }).then(res => {
         const song = res.songs[0];
         currentTrackInfo.value = {
           id: song.id,
@@ -186,6 +252,8 @@ export const usePlayerStore = defineStore(
       positionStr,
       durationStr,
       showPlayerQueue,
+      isPrivateFM,
+      privateFMTrack,
       init,
       play,
       playOrPause,
@@ -195,7 +263,9 @@ export const usePlayerStore = defineStore(
       next,
       switchPlayMode,
       playAtIndex,
-      addTracks
+      addTracks,
+      playPrivateFM,
+      nextPrivateFM
     }
   }
 );

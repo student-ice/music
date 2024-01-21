@@ -28,6 +28,7 @@ const playerQueueBtnClicked = () => {
     </div>
     <div class="controls">
       <icon-button
+        v-show="!player.isPrivateFM"
         icon="/src/assets/icons/previous.svg"
         @click="player.previous"
       ></icon-button>
@@ -60,14 +61,15 @@ const playerQueueBtnClicked = () => {
     <!-- 播放模式按钮 -->
     <icon-button
       class="play-mode-btn"
+      :disable="player.isPrivateFM"
       :icon="player.playlist.playModeIcon"
       @click="player.switchPlayMode"
     ></icon-button>
     <icon-button
+      :disable="player.isPrivateFM"
       icon="/src/assets/icons/player-queue.svg"
       @click="playerQueueBtnClicked"
     >
-      播放列表
     </icon-button>
   </div>
 </template>

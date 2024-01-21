@@ -1,5 +1,5 @@
 <template>
-  <a-button :class="{ 'play-button': isPlayBtn }">
+  <a-button :class="{ 'play-button': isPlayBtn }" :disabled="disable">
     <img :src="icon" />
   </a-button>
 </template>
@@ -11,12 +11,18 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  disable: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const isPlayBtn = computed(
   () =>
     props.icon === '/src/assets/icons/play.svg' ||
-    props.icon === '/src/assets/icons/pause.svg'
+    props.icon === '/src/assets/icons/pause.svg' ||
+    props.icon === '/src/assets/icons/play-light.svg' ||
+    props.icon === '/src/assets/icons/pause-light.svg'
 );
 </script>
 

@@ -5,6 +5,7 @@ import { topArtists } from '@/api/artist';
 import { banner } from '@/api/banner';
 import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
+import PrivateFM from '@/components/PrivateFM.vue';
 
 const bannerRes = ref([]);
 const recommendPlaylistsRes = ref([]);
@@ -38,6 +39,7 @@ onMounted(() => {
       </div>
       <!-- 中间间距30 -->
       <a-space size="30"></a-space>
+      <PrivateFM class="right" />
     </div>
     <div class="index-row">
       <div class="title">
