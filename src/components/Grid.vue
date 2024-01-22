@@ -20,7 +20,10 @@ const props = defineProps({
     default: '0.75em',
   },
   type: {
-    type: String
+    type: String,
+  },
+  loadingNum: {
+    type: Number,
   },
 });
 
@@ -42,12 +45,28 @@ const getImageUrl = (item) => {
 </script>
 
 <template>
-  <div class="cover-grid" :style="rowStyles">
-    <div class="item" v-for="(item, index) in items" :class="{ artist: props.type === 'artist' }">
+  <div v-if="items.length" class="cover-grid" :style="rowStyles">
+    <div
+      class="item"
+      v-for="item in items"
+      :class="{ artist: props.type === 'artist' }"
+    >
       <Cover :image-url="getImageUrl(item)" :type="type" :id="item.id" />
       <div class="text">
         {{ item.name }}
       </div>
+    </div>
+  </div>
+  <div v-else class="cover-grid-loading" :style="rowStyles">
+    <div
+      class="item"
+      v-for="index in loadingNum"
+      :class="{ artist: props.type === 'artist' }"
+    >
+      <div class="img-loading">
+        <img src="/src/assets/icons/skeleton-image.svg" alt="" />
+      </div>
+      <a-skeleton-button :block="true" :active="true" />
     </div>
   </div>
 </template>
@@ -91,6 +110,36 @@ const getImageUrl = (item) => {
 
   .text {
     margin-top: 4px;
+  }
+}
+
+.cover-grid-loading {
+  display: grid;
+  margin-top: 20px;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+
+    .img-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 0.75em;
+      background: rgba(0, 0, 0, 0.06);
+      margin-bottom: 5px;
+    }
+
+    .ant-skeleton-button {
+      border-radius: 0.75em;
+    }
+  }
+  .artist {
+    .img-loading {
+      border-radius: 50%;
+    }
   }
 }
 </style>

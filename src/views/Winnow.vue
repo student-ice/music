@@ -25,7 +25,7 @@ onMounted(() => {
   <div class="winnow">
     <a-tabs v-model:activeKey="activeKey">
       <a-tab-pane key="1" tab="精选">
-        <div v-show="playlists.length !== 0" class="index-row">
+        <div class="index-row">
           <div class="title">
             <h2>官方歌单</h2>
             <a-button>
@@ -34,9 +34,9 @@ onMounted(() => {
               </template>
             </a-button>
           </div>
-          <Grid :items="playlists" type="winnow" />
+          <Grid :items="playlists" type="winnow" :loadingNum="12" />
         </div>
-        <div v-show="newSongs.length !== 0" class="index-row">
+        <div class="index-row">
           <div class="title">
             <h2>最新音乐</h2>
             <a-button>
@@ -45,7 +45,7 @@ onMounted(() => {
               </template>
             </a-button>
           </div>
-          <div class="grid">
+          <div v-if="newSongs.length" class="grid">
             <div
               class="item"
               v-for="(song, index) in newSongs"
@@ -74,6 +74,31 @@ onMounted(() => {
               <div class="text">
                 <span class="title">{{ song.name }}</span>
                 <span>{{ song.song.artists[0].name }}</span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="grid">
+            <div class="item" v-for="index in 9" :key="index">
+              <div class="cover">
+                <img
+                  src="/src/assets/icons/skeleton-image.svg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="info">
+                <a-skeleton-button
+                  class="up"
+                  size="small"
+                  :block="true"
+                  :active="true"
+                />
+                <a-skeleton-button
+                  class="down"
+                  size="small"
+                  :block="true"
+                  :active="true"
+                />
               </div>
             </div>
           </div>
@@ -109,7 +134,6 @@ onMounted(() => {
     gap: 20px;
 
     .item {
-      width: 100%;
       display: flex;
       height: 80px;
       border-radius: 0.75em;
@@ -129,6 +153,7 @@ onMounted(() => {
       .text {
         margin-left: 10px;
         display: flex;
+        flex-grow: 1;
         flex-direction: column;
         justify-content: center;
 
@@ -137,6 +162,19 @@ onMounted(() => {
           font-weight: 600;
           color: #000;
           line-height: 20px;
+        }
+      }
+
+      .info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .ant-skeleton.up {
+          margin-bottom: 5px;
+        }
+        .ant-skeleton.down {
+          margin-top: 5px;
         }
       }
 

@@ -33,7 +33,7 @@ onMounted(() => {
       <div class="left">
         <a-carousel autoplay>
           <div class="banner" v-for="item in bannerRes">
-            <img :src="item.imageUrl" alt="" />
+            <img :src="item.imageUrl + 'param?800y400'" alt="" />
           </div>
         </a-carousel>
       </div>
@@ -50,11 +50,11 @@ onMounted(() => {
           </template>
         </a-button>
       </div>
-      <Grid :items="recommendPlaylistsRes" />
+      <Grid :items="recommendPlaylistsRes" :loading-num="12" />
     </div>
     <div class="index-row">
       <h2>热门歌手</h2>
-      <Grid :items="topArtistsRes" type="artist" />
+      <Grid :items="topArtistsRes" type="artist" :loading-num="6" />
     </div>
   </div>
 </template>
