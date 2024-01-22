@@ -107,6 +107,7 @@ export const usePlayerStore = defineStore(
 
     // 播放私人FM下一首
     async function nextPrivateFM() {
+      isPrivateFM.value = true;
       const { data } = await getPrivateFM()
       privateFMTrack.value = {
         id: data[0].id,
