@@ -6,7 +6,9 @@ import { banner } from '@/api/banner';
 import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
 import PrivateFM from '@/components/PrivateFM.vue';
+import { usePlayerStore } from '@/stores/player';
 
+const player = usePlayerStore();
 const bannerRes = ref([]);
 const recommendPlaylistsRes = ref([]);
 const topArtistsRes = ref([]);
@@ -30,16 +32,25 @@ onMounted(() => {
     <div class="index-row index-flex first-row">
       <!-- 分为左右两块 -->
       <!-- 左边轮播图 -->
-      <div class="left">
+      <div v-if="bannerRes.length" class="left">
         <a-carousel autoplay>
           <div class="banner" v-for="item in bannerRes">
             <img :src="item.imageUrl + 'param?800y400'" alt="" />
           </div>
         </a-carousel>
       </div>
+      <div v-else class="left">
+        <SkeletonImage :square="false" />
+      </div>
       <!-- 中间间距30 -->
       <a-space size="30"></a-space>
-      <PrivateFM class="right" />
+      <PrivateFM
+        v-if="player.privateFMTrack.picUrl !== '/src/assets/icons/default.svg'"
+        class="right"
+      />
+      <div v-else class="right">
+        <SkeletonImage :square="false" />
+      </div>
     </div>
     <div class="index-row">
       <div class="title">

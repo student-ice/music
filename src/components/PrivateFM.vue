@@ -30,7 +30,7 @@ watch(
         background.value = `linear-gradient(to top left, ${color}, ${color2})`;
       });
   },
-  { deep: true }
+  { immediate: true, deep: true }
 );
 </script>
 
