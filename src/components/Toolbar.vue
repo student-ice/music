@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import IconButton from '@/components/IconButton.vue';
 import { usePlayerStore } from '@/stores/player';
+import { useUIStore } from '@/stores/ui';
 
 const player = usePlayerStore();
+const ui = useUIStore();
 
 player.init();
 
@@ -13,14 +15,18 @@ const formatter = (value: number) => {
 };
 
 const playerQueueBtnClicked = () => {
-  player.showPlayerQueue = !player.showPlayerQueue;
+  ui.showPlayerQueue = !ui.showPlayerQueue;
 };
 </script>
 
 <template>
   <div class="toolbar">
     <div class="song-info">
-      <img :src="player.currentTrackInfo.picUrl" alt="" />
+      <img
+        :src="player.currentTrackInfo.picUrl"
+        alt=""
+        @click="ui.showLyric = true"
+      />
       <div class="info">
         <h3>{{ player.currentTrackInfo.name }}</h3>
         <p>{{ player.currentTrackInfo.artists }}</p>
@@ -38,6 +44,7 @@ const playerQueueBtnClicked = () => {
             ? '/src/assets/icons/play.svg'
             : '/src/assets/icons/pause.svg'
         "
+        :size="45"
         @click="player.playOrPause"
       ></icon-button>
       <icon-button

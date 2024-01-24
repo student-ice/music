@@ -1,12 +1,17 @@
 <template>
-  <a-button :class="{ 'play-button': isPlayBtn }" :disabled="disable">
-    <img :src="icon" />
+  <a-button
+    :style="{ width: size + 'px', height: size + 'px' }"
+    :disabled="disable"
+  >
+    <img
+      :src="icon"
+      :style="{ width: size - 5 + 'px', height: size - 5 + 'px' }"
+    />
   </a-button>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-const props = defineProps({
+defineProps({
   icon: {
     type: String,
     default: '',
@@ -15,21 +20,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  size: {
+    type: Number,
+    default: 35,
+  },
 });
-
-const isPlayBtn = computed(
-  () =>
-    props.icon === '/src/assets/icons/play.svg' ||
-    props.icon === '/src/assets/icons/pause.svg' ||
-    props.icon === '/src/assets/icons/play-light.svg' ||
-    props.icon === '/src/assets/icons/pause-light.svg'
-);
 </script>
 
 <style lang="scss" scoped>
 .ant-btn {
-  width: 35px;
-  height: 35px;
   background: transparent;
   border: none;
   display: flex;
@@ -44,21 +43,6 @@ const isPlayBtn = computed(
 
   &:active {
     transform: scale(0.9);
-  }
-
-  img {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-.play-button {
-  width: 45px;
-  height: 45px;
-
-  img {
-    width: 45px;
-    height: 45px;
   }
 }
 </style>

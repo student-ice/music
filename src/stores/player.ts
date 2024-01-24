@@ -37,9 +37,6 @@ export const usePlayerStore = defineStore(
     // 播放状态
     const playState = ref<PlayState>(PlayState.Stopped);
 
-    // 显示播放列表
-    const showPlayerQueue = ref<boolean>(false);
-
     // 是否正在播放私人FM
     const isPrivateFM = ref<boolean>(false);
     // 私人FM当前歌曲信息
@@ -252,7 +249,6 @@ export const usePlayerStore = defineStore(
       duration,
       positionStr,
       durationStr,
-      showPlayerQueue,
       isPrivateFM,
       privateFMTrack,
       init,

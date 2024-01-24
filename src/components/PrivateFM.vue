@@ -51,6 +51,7 @@ watch(
               ? '/src/assets/icons/pause-light.svg'
               : '/src/assets/icons/play-light.svg'
           "
+          :size="45"
           @click="player.playPrivateFM"
         />
         <IconButton
@@ -120,23 +121,8 @@ watch(
     position: absolute;
     top: 0;
     left: 0;
-    background-repeat: no-repeat;
-    background-size: 150% 150%;
-    background-position: center;
     border-radius: 8px;
     z-index: -1;
-    &::after {
-      content: '';
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #0f0e0e60;
-      backdrop-filter: blur(30px);
-      box-sizing: border-box;
-      border-radius: 8px;
-    }
   }
   .tip {
     position: absolute;

@@ -4,10 +4,11 @@ import Sidebar from './components/Sidebar.vue';
 import Toolbar from '@/components/Toolbar.vue';
 import PlayerQueue from './components/PlayerQueue.vue';
 import { setTwoToneColor } from '@ant-design/icons-vue';
-import { usePlayerStore } from '@/stores/player';
+import { useUIStore } from '@/stores/ui';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import Lyric from './components/Lyric.vue';
 
-const player = usePlayerStore();
+const ui = useUIStore();
 setTwoToneColor('#7752FE');
 </script>
 
@@ -31,9 +32,8 @@ setTwoToneColor('#7752FE');
         </a-layout-sider>
         <a-layout-content>
           <router-view></router-view>
-          <transition name="fade">
-            <PlayerQueue v-show="player.showPlayerQueue" />
-          </transition>
+          <PlayerQueue v-show="ui.showPlayerQueue" />
+          <Lyric v-show="ui.showLyric" />
         </a-layout-content>
       </a-layout>
       <a-layout-footer>
@@ -71,30 +71,6 @@ setTwoToneColor('#7752FE');
     flex: 1;
     overflow-y: scroll;
     padding: 10px 50px 10px 50px;
-
-    .fade-enter-from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    .fade-enter-active {
-      transition: all 0.4s;
-    }
-
-    .fade-enter-to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    .fade-leave-from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    .fade-leave-active {
-      transition: all 0.4s;
-    }
-    .fade-leave-to {
-      transform: translateX(100%);
-      opacity: 0;
-    }
   }
 }
 

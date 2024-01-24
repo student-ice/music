@@ -39,6 +39,7 @@ declare module 'vue' {
     IconButton: typeof import('./src/components/IconButton.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
     LoginQRCode: typeof import('./src/components/LoginQRCode.vue')['default']
+    Lyric: typeof import('./src/components/Lyric.vue')['default']
     PlayerQueue: typeof import('./src/components/PlayerQueue.vue')['default']
     PrivateFM: typeof import('./src/components/PrivateFM.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -1,39 +1,41 @@
 <template>
-  <div class="player-queue">
-    <h2>播放列表</h2>
-    <div
-      v-for="(song, index) in player.playlist.playlistModel"
-      :class="
-        player.playlist.currentIndex === index
-          ? 'song-list active'
-          : 'song-list'
-      "
-    >
-      <Cover
-        :image-url="song.picUrl"
-        :show-play-btn="false"
-        :img-size="50"
-        loading="lazy"
-      />
-      <!-- 歌曲名称和作者 -->
-      <div class="song-info">
-        <div class="song-name">
-          <span>{{ song.name }}</span>
+  <Transition name="fade">
+    <div class="player-queue">
+      <h2>播放列表</h2>
+      <div
+        v-for="(song, index) in player.playlist.playlistModel"
+        :class="
+          player.playlist.currentIndex === index
+            ? 'song-list active'
+            : 'song-list'
+        "
+      >
+        <Cover
+          :image-url="song.picUrl"
+          :show-play-btn="false"
+          :img-size="50"
+          loading="lazy"
+        />
+        <!-- 歌曲名称和作者 -->
+        <div class="song-info">
+          <div class="song-name">
+            <span>{{ song.name }}</span>
+          </div>
+          <div class="song-artists">
+            <span>{{ song.artists }}</span>
+          </div>
         </div>
-        <div class="song-artists">
-          <span>{{ song.artists }}</span>
+        <!-- 专辑名 -->
+        <div class="song-album">
+          <span>{{ song.album }}</span>
         </div>
-      </div>
-      <!-- 专辑名 -->
-      <div class="song-album">
-        <span>{{ song.album }}</span>
-      </div>
-      <!-- 歌曲时长 -->
-      <div class="song-duration">
-        <span>{{ formatDuration(song.duration) }}</span>
+        <!-- 歌曲时长 -->
+        <div class="song-duration">
+          <span>{{ formatDuration(song.duration) }}</span>
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script lang="ts" setup>
@@ -115,5 +117,28 @@ const player = usePlayerStore();
       background-color: rgba(0, 0, 0, 0.06);
     }
   }
+}
+.fade-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.fade-enter-active {
+  transition: all 0.4s;
+}
+
+.fade-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+.fade-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+.fade-leave-active {
+  transition: all 0.4s;
+}
+.fade-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
 }
 </style>
