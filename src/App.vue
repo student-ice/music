@@ -19,7 +19,7 @@ setTwoToneColor('#7752FE');
       :theme="{
         token: {
           colorPrimary: '#7752FE',
-          colorPrimaryBg: '#dcd0ef',
+          colorPrimaryBg: '#e2d4f9',
         },
       }"
     >

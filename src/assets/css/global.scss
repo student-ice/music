@@ -19,6 +19,10 @@ body {
   height: 100%;
 }
 
+:root {
+  --list-hover-bg: #e2d4f9
+}
+
 #app {
   width: 100%;
   transition: all 0.3s;

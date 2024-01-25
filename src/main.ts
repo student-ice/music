@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
-import './style.scss';
 import App from './App.vue';
 import router from '@/router';
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+import '@/assets/css/global.scss';
 
 console.log('运行环境: ' + process.env.NODE_ENV);
 
