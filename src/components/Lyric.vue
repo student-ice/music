@@ -27,7 +27,17 @@ const getLyricData = async () => {
 const lyricScroll = () => {
   lyricTimer.value = setInterval(() => {
     const currentTime = player.position;
-    const index = lyric.value.findIndex((item) => item.time > currentTime);
+    let left = 0;
+    let right = lyric.value.length - 1;
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
+      if (lyric.value[mid].time > currentTime) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    }
+    const index = left;
     if (index > 0 && index !== hightlightIndex.value) {
       hightlightIndex.value = index - 1;
       scrollTo(index - 1);

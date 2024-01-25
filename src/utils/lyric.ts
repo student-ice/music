@@ -11,10 +11,9 @@ export function parseLyric(lyricString: string): { time: number, content: string
     const content = lyricLine.replace(timeReg, '');
     if (!content)
       continue;
-    const timeString = timeRegExpArr[0];
-    const min = Number(String(timeString.match(/\[\d*/i)).slice(1));
-    const sec = Number(String(timeString.match(/:\d*/i)).slice(1));
-    const time = min * 60 + sec;
+    const timeString = timeRegExpArr[0].substring(1, timeRegExpArr[0].length - 1);
+    const [minute, second] = timeString.split(':').map(Number);
+    const time = minute * 60 + second;
 
     lyric.push({
       time,
