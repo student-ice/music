@@ -75,7 +75,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <SongList :songs="songs" :id="playlistInfo.id" />
+    <SongList :songs="songs" :playlist-id="playlistInfo.id" />
   </div>
 </template>
 

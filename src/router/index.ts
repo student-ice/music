@@ -21,6 +21,11 @@ const routes = [
     name: 'playlist',
     component: () => import('@/views/Playlist.vue'),
   },
+  {
+    path: '/daily',
+    name: 'daily',
+    component: () => import('@/views/Daily.vue'),
+  }
 ];
 
 const router = createRouter({

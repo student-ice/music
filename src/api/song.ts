@@ -38,6 +38,14 @@ export async function getLyric(params: LyricParams): Promise<LyricResult> {
   })
 }
 
+// 获取每日推荐歌曲
+export async function getRecommendSong(): Promise<RecommendSongResult> {
+  return request({
+    url: '/recommend/songs',
+    method: 'get',
+  })
+}
+
 export interface LyricParams {
   id: number;
 }
@@ -50,5 +58,12 @@ export interface LyricResult {
   code: number;
   lrc: {
     lyric: string;
+  };
+}
+
+export interface RecommendSongResult {
+  code: number;
+  data: {
+    dailySongs: Track[];
   };
 }

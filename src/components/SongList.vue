@@ -10,7 +10,7 @@ const props = defineProps({
     type: Array<Track>,
     required: true,
   },
-  id: {
+  playlistId: {
     type: Number,
     default: -1,
   },
@@ -24,7 +24,7 @@ const loadSize = ref<number>(50);
 
 // 双击歌曲
 const songItemDbClicked = (index: number) => {
-  player.addTracks(props.id, getSongs(), index);
+  player.addTracks(props.playlistId, getSongs(), index);
 };
 
 const getSongs = () => {
