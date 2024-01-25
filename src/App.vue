@@ -32,7 +32,7 @@ setTwoToneColor('#7752FE');
         </a-layout-sider>
         <a-layout-content>
           <router-view></router-view>
-          <PlayerQueue v-show="ui.showPlayerQueue" />
+          <PlayerQueue />
           <Lyric v-show="ui.showLyric" />
         </a-layout-content>
       </a-layout>

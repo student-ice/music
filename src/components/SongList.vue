@@ -153,7 +153,7 @@ const pageNumberChanged = (page: number) => {
     }
 
     &.active {
-      background-color: var(--list-hover-bg);
+      background-color: var(--list-active-bg);
     }
   }
   .ant-pagination {
