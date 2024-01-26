@@ -289,25 +289,21 @@ watch(
 
 .fade-enter-from {
   transform: translateY(100%);
-  opacity: 0;
 }
 .fade-enter-active {
-  transition: all 0.4s;
+  transition: all 0.6s;
 }
 
 .fade-enter-to {
   transform: translateY(0);
-  opacity: 1;
 }
 .fade-leave-from {
   transform: translateY(0);
-  opacity: 1;
 }
 .fade-leave-active {
-  transition: all 0.4s;
+  transition: all 0.6s;
 }
 .fade-leave-to {
   transform: translateY(100%);
-  opacity: 0;
 }
 </style>
