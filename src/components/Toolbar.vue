@@ -2,9 +2,11 @@
 import IconButton from '@/components/IconButton.vue';
 import { usePlayerStore } from '@/stores/player';
 import { useUIStore } from '@/stores/ui';
+import { ref } from 'vue';
 
 const player = usePlayerStore();
 const ui = useUIStore();
+const showFullScreen = ref<boolean>(false);
 
 player.init();
 
@@ -22,11 +24,21 @@ const playerQueueBtnClicked = () => {
 <template>
   <div class="toolbar">
     <div class="song-info">
-      <img
-        :src="player.currentTrackInfo.picUrl"
-        alt=""
-        @click="ui.showLyric = true"
-      />
+      <div
+        class="cover"
+        @mouseenter="showFullScreen = true"
+        @mouseleave="showFullScreen = false"
+      >
+        <img :src="player.currentTrackInfo.picUrl" alt="" />
+        <div v-show="showFullScreen" class="full-screen-btn">
+          <img
+            src="/src/assets/icons/full-screen.svg"
+            alt=""
+            @click="ui.showLyric = true"
+          />
+        </div>
+      </div>
+
       <div class="info">
         <h3>{{ player.currentTrackInfo.name }}</h3>
         <p>{{ player.currentTrackInfo.artists }}</p>
@@ -97,14 +109,31 @@ const playerQueueBtnClicked = () => {
     align-items: center;
     justify-content: center;
 
-    img {
-      width: 50px;
-      height: 50px;
+    .cover {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-right: 10px;
-      border: 1px solid #eee;
+      box-sizing: border-box;
       border-radius: 0.35em;
-      /* 阴影 */
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: inherit;
+      }
+
+      .full-screen-btn {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        z-index: 2;
+        border-radius: 0.35em;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+      }
     }
 
     .info {
@@ -123,6 +152,7 @@ const playerQueueBtnClicked = () => {
         font-size: 16px;
         font-weight: 500;
         margin-bottom: 5px;
+        user-select: none;
       }
 
       p {
@@ -132,6 +162,7 @@ const playerQueueBtnClicked = () => {
         text-overflow: ellipsis;
         font-size: 14px;
         color: #999;
+        user-select: none;
       }
     }
   }
