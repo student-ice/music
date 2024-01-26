@@ -55,10 +55,10 @@ setTwoToneColor('#7752FE');
 
 .ant-layout.content {
   height: 100vh;
-  padding-top: 64px;
-  padding-bottom: 60px;
 
   .ant-layout-sider {
+    padding-top: 64px;
+    padding-bottom: 64px;
     overflow-y: scroll;
     height: 100%;
     line-height: 120px;
@@ -70,7 +70,7 @@ setTwoToneColor('#7752FE');
   .ant-layout-content {
     flex: 1;
     overflow-y: scroll;
-    padding: 10px 50px 10px 50px;
+    padding: 64px 50px 64px 50px;
   }
 }
 

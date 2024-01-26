@@ -97,7 +97,8 @@ const playerQueueBtnClicked = () => {
 .toolbar {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(180%) blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
