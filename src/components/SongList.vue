@@ -11,20 +11,34 @@ const props = defineProps({
     required: true,
   },
   playlistId: {
-    type: Number,
+    type: String,
     default: -1,
+  },
+  // 是否分页显示
+  isPaging: {
+    type: Boolean,
+    default: true,
+  },
+  pageNumber: {
+    type: Number,
+    default: 1,
+  },
+  loadSize: {
+    type: Number,
+    default: 50,
+  },
+  // 是否以加载全部歌曲
+  loadAll: {
+    type: Boolean,
+    default: true,
   },
 });
 
 const player = usePlayerStore();
 
-const pageNumber = ref<number>(1);
-
-const loadSize = ref<number>(50);
-
 // 双击歌曲
 const songItemDbClicked = (index: number) => {
-  player.addTracks(props.playlistId, getSongs(), index);
+  player.addTracks(props.playlistId, getSongs(), index, props.loadAll);
 };
 
 const getSongs = () => {
@@ -41,24 +55,14 @@ const getSongs = () => {
   });
   return songs;
 };
-
-const pageNumberChanged = (page: number) => {
-  pageNumber.value = page;
-  console.log(page, pageNumber.value);
-  // 滚动到顶部 .ant-layout-content
-  const content = document.querySelector('.ant-layout-content');
-  if (content) {
-    content.scrollTop = 0;
-  }
-};
 </script>
 
 <template>
   <div class="song-list">
     <div
       v-for="(song, index) in songs.slice(
-        (pageNumber - 1) * loadSize,
-        (pageNumber - 1) * loadSize + loadSize
+        isPaging ? (pageNumber - 1) * loadSize : 0,
+        isPaging ? (pageNumber - 1) * loadSize + loadSize : songs.length
       )"
       :key="index"
       :class="
@@ -90,14 +94,6 @@ const pageNumberChanged = (page: number) => {
         <span>{{ formatDuration(song.dt) }}</span>
       </div>
     </div>
-    <a-pagination
-      v-model:current="pageNumber"
-      :total="songs.length"
-      :defaultPageSize="50"
-      :showSizeChanger="false"
-      show-less-items
-      @change="pageNumberChanged"
-    />
   </div>
 </template>
 
@@ -155,10 +151,6 @@ const pageNumberChanged = (page: number) => {
     &.active {
       background-color: var(--list-active-bg);
     }
-  }
-  .ant-pagination {
-    margin-top: 20px;
-    text-align: center;
   }
 }
 </style>

@@ -80,10 +80,17 @@ export const usePlayerStore = defineStore(
       console.log("播放列表歌曲数: " + playlist.playlistCount)
     }
 
-    // 添加播放列表歌曲到播放列表，并播放
-    function addTracks(id: number, songs: TrackModel[], index: number = -1) {
+    /**
+     * 添加播放列表歌曲到播放列表，并播放
+     * @param id 歌单id
+     * @param songs 歌曲信息
+     * @param index 要播放的歌曲下标
+     * @param loadAll 歌单歌曲是否全部加载
+     * @returns 
+     */
+    function addTracks(id: string, songs: TrackModel[], index: number = -1, loadAll: boolean = true) {
       isPrivateFM.value = false;
-      if (playlist.playlistId === id.toString()) {
+      if (playlist.playlistId === id && loadAll) {
         if (index === -1) {
           playAtIndex(0);
         } else {
@@ -93,7 +100,7 @@ export const usePlayerStore = defineStore(
       }
       // 执行到这里，说明是新的歌单
       playlist.clearPlaylist();
-      playlist.playlistId = id.toString();
+      playlist.playlistId = id;
       playlist.addTracks(songs);
       if (index === -1) {
         playAtIndex(0);

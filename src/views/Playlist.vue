@@ -16,6 +16,8 @@ console.log('歌单id: ', route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
 const songs = ref<Track[]>([]);
 const count = ref<number>(0);
+const pageNumber = ref<number>(1);
+const loadSize = ref<number>(50);
 
 const loadSongs = async () => {
   let ids = [];
@@ -38,6 +40,15 @@ onMounted(async () => {
   console.log(count.value);
   await loadSongs();
 });
+
+const pageNumberChanged = (page: number) => {
+  pageNumber.value = page;
+  console.log(page, pageNumber.value);
+  const content = document.querySelector('.ant-layout-content');
+  if (content) {
+    content.scrollTop = 0;
+  }
+};
 </script>
 <template>
   <div v-if="playlistInfo !== undefined" class="playlist">
@@ -75,7 +86,20 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <SongList :songs="songs" :playlist-id="playlistInfo.id" />
+    <SongList
+      :songs="songs"
+      :playlist-id="playlistInfo.id.toString()"
+      :page-number="pageNumber"
+      :load-size="loadSize"
+    />
+    <a-pagination
+      v-model:current="pageNumber"
+      :total="songs.length"
+      :defaultPageSize="loadSize"
+      :showSizeChanger="false"
+      show-less-items
+      @change="pageNumberChanged"
+    />
   </div>
 </template>
 
@@ -127,9 +151,10 @@ onMounted(async () => {
     }
   }
 }
-
-.load-more {
-  margin-top: 20px;
-  text-align: center;
+.playlist {
+  .ant-pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
 }
 </style>

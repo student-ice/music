@@ -25,6 +25,11 @@ const routes = [
     path: '/daily',
     name: 'daily',
     component: () => import('@/views/Daily.vue'),
+  },
+  {
+    path: '/search/:keywords',
+    name: 'search',
+    component: () => import('@/views/Search.vue'),
   }
 ];
 

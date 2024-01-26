@@ -103,7 +103,7 @@ watch(
   <Transition name="fade">
     <div class="lyric-page" :style="{ background }">
       <div class="close-btn" @click="ui.showLyric = false">
-        <img src="src/assets/icons/down.svg" alt="" />
+        <img src="/src/assets/icons/down.svg" alt="" />
       </div>
       <div class="left-content">
         <div class="cover">

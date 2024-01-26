@@ -4,7 +4,9 @@ import Login from './Login.vue';
 import { useUserStore } from '@/stores/user';
 import { loginStatus } from '@/api/login';
 import { clearCookie } from '@/utils/auth';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const userStore = useUserStore();
 const loginRef = ref(null);
 
@@ -24,6 +26,17 @@ const logout = () => {
   clearCookie('MUSIC_U');
 };
 
+const pressEnter = (e: any) => {
+  if (e) {
+    router.push({
+      name: 'search',
+      params: {
+        keywords: e,
+      },
+    });
+  }
+};
+
 onMounted(() => {
   checkLoginStatus();
 });
@@ -32,7 +45,11 @@ onMounted(() => {
   <div class="nav">
     <div class="side"></div>
     <div class="main">
-      <a-input-search placeholder="搜索歌曲" enter-button />
+      <a-input-search
+        placeholder="搜索歌曲"
+        enter-button
+        @search="pressEnter"
+      />
       <a-dropdown v-if="userStore.loginStatus">
         <div class="user-info">
           <a-avatar :src="userStore.userAvatar" />
