@@ -15,9 +15,18 @@ const user = useUserStore();
 
 const goto = (item) => {
   if (item.key !== route.name) {
-    router.push({
-      name: item.key,
-    });
+    if (item.key === 'like-songs') {
+      router.push({
+        name: item.key,
+        params: {
+          id: user.userLikeListId,
+        },
+      });
+    } else {
+      router.push({
+        name: item.key,
+      });
+    }
   }
 };
 </script>

@@ -10,15 +10,15 @@ export function getUserProfile(): Promise<UserProfileResult> {
   });
 }
 
-export function getLikeList(uid: number): Promise<LikeListResult> {
+export function getUserPlaylist(uid: number): Promise<UserPlaylistResult> {
   return request({
-    url: '/likelist',
+    url: '/user/playlist',
     method: 'get',
     params: {
       uid,
       timestamp: new Date().getTime()
     }
-  });
+  })
 }
 
 export interface UserProfileResult {
@@ -59,6 +59,40 @@ export interface UserProfileResult {
   };
 }
 
-export interface LikeListResult {
-  ids: number[];
+export interface UserPlaylistResult {
+  code: number;
+  playlist: {
+    artists: null;
+    backgroundCoverUrl: null | string;
+    coverImgUrl: string;
+    createTime: number;
+    creator: {
+      avatarUrl: string;
+      backgroundUrl: string;
+      defaultAvatar: boolean;
+      followed: boolean;
+      nickname: string;
+      province: number;
+      userId: number;
+      userType: number;
+    };
+    description: null | string;
+    englishTitle: null | string;
+    id: number;
+    name: string;
+    playCount: number;
+    privacy: number;
+    sharedUsers: null;
+    shareStatus: null;
+    status: number;
+    tags: string[];
+    titleImageUrl: null | string;
+    totalDuration: number;
+    trackCount: number;
+    trackNumberUpdateTime: number;
+    tracks: null;
+    trackUpdateTime: number;
+    updateTime: number;
+    userId: number;
+  }[];
 }

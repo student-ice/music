@@ -10,7 +10,6 @@ import SongList from '@/components/SongList.vue';
 import { songDetail } from '@/api/song';
 
 const route = useRoute();
-const player = usePlayerStore();
 const loading = ref<boolean>(false);
 console.log('歌单id: ', route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
@@ -24,10 +23,7 @@ const loadSongs = async () => {
   playlistInfo.value.trackIds.forEach((item) => {
     ids.push(item.id);
   });
-  const _songs = await songDetail({
-    ids: ids.join(','),
-  });
-  console.log(_songs.songs);
+  const _songs = await songDetail(ids.join(','));
   songs.value = _songs.songs;
   loading.value = false;
 };
