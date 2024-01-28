@@ -118,6 +118,10 @@ watch(
             }"
           ></div>
         </div>
+        <div class="info">
+          <div class="name">{{ player.currentTrackInfo.name }}</div>
+          <div class="artist">{{ player.currentTrackInfo.artists }}</div>
+        </div>
         <div class="controls">
           <IconButton
             icon="/src/assets/icons/previous-light.svg"
@@ -230,6 +234,29 @@ watch(
         filter: blur(16px) opacity(0.7);
         z-index: -1;
         background-size: cover;
+      }
+    }
+
+    .info {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .name {
+        font-size: 24px;
+        font-weight: 600;
+        color: #fff;
+        user-select: none;
+      }
+
+      .artist {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        user-select: none;
       }
     }
 
