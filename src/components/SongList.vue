@@ -70,7 +70,11 @@ const getSongs = () => {
           ? 'song-list-item active'
           : 'song-list-item'
       "
-      @dblclick.native="songItemDbClicked(index)"
+      @dblclick.native="
+        songItemDbClicked(
+          isPaging ? (pageNumber - 1) * loadSize + index : index
+        )
+      "
     >
       <Cover
         :image-url="song.al.picUrl"
