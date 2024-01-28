@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import { h } from 'vue';
-import { HomeFilled, StarFilled, LikeFilled } from '@ant-design/icons-vue';
+import {
+  HomeFilled,
+  StarFilled,
+  LikeFilled,
+  HeartFilled,
+} from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 
@@ -35,6 +40,12 @@ const goto = (item) => {
         <a-menu-divider v-if="user.loginStatus"></a-menu-divider>
         <a-menu-item v-if="user.loginStatus" key="daily" :icon="h(LikeFilled)"
           >每日推荐</a-menu-item
+        >
+        <a-menu-item
+          v-if="user.loginStatus"
+          key="like-songs"
+          :icon="h(HeartFilled)"
+          >喜欢的音乐</a-menu-item
         >
       </a-menu>
     </a-config-provider>

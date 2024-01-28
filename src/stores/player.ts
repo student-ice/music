@@ -203,7 +203,7 @@ export const usePlayerStore = defineStore(
       } else {
         ids = playlist.getCurrentTrackId().toString();
       }
-      songDetail({ ids }).then(res => {
+      songDetail(ids).then(res => {
         const song = res.songs[0];
         currentTrackInfo.value = {
           id: song.id,

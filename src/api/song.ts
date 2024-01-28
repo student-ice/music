@@ -20,12 +20,14 @@ export async function songUrl(params: MusicUrlParams): Promise<SongUrlResult> {
 }
 
 // 获取歌曲详情
-export async function songDetail(params: SongDetailParams): Promise<SongDetailResult> {
+export async function songDetail(ids: string): Promise<SongDetailResult> {
   return request({
     url: '/song/detail',
     method: 'get',
     noCookie: true,
-    params,
+    params: {
+      ids,
+    }
   })
 }
 

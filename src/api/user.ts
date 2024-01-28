@@ -10,6 +10,17 @@ export function getUserProfile(): Promise<UserProfileResult> {
   });
 }
 
+export function getLikeList(uid: number): Promise<LikeListResult> {
+  return request({
+    url: '/likelist',
+    method: 'get',
+    params: {
+      uid,
+      timestamp: new Date().getTime()
+    }
+  });
+}
+
 export interface UserProfileResult {
   account: {
     createTime: number;
@@ -46,4 +57,8 @@ export interface UserProfileResult {
     userType: number;
     vipType: number;
   };
+}
+
+export interface LikeListResult {
+  ids: number[];
 }
