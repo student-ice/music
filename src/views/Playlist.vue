@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { formatDate } from '@/utils/format';
 import { useRoute } from 'vue-router';
 import { playlistDetail } from '@/api/playlist';
@@ -28,13 +28,17 @@ const loadSongs = async () => {
   loading.value = false;
 };
 
-onMounted(async () => {
+// 初始化
+const init = async () => {
   loading.value = true;
   const res = await playlistDetail({ id: route.params.id });
   playlistInfo.value = res.playlist;
   count.value = res.playlist.trackCount;
-  console.log(count.value);
   await loadSongs();
+};
+
+onMounted(async () => {
+  init();
 });
 
 const pageNumberChanged = (page: number) => {
@@ -45,6 +49,13 @@ const pageNumberChanged = (page: number) => {
     content.scrollTop = 0;
   }
 };
+
+watch(
+  () => route.params.id,
+  async () => {
+    init();
+  }
+);
 </script>
 <template>
   <div v-if="playlistInfo !== undefined" class="playlist">
