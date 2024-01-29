@@ -13,13 +13,20 @@ const player = usePlayerStore();
 
 const background = ref<string>('rgb(240, 243, 246)');
 const lyric = ref<Array<{ time: number; content: string }>>([]);
-const hightlightIndex = ref<number>(1);
+const hightlightIndex = ref<number>(0);
 const lyricTimer = ref<NodeJS.Timeout>(null);
+const hasLyric = ref<boolean>(true);
 
 const getLyricData = async () => {
   clearInterval(lyricTimer.value);
+  hasLyric.value = true;
+  hightlightIndex.value = 0;
   lyric.value = [];
   const { lrc } = await getLyric({ id: player.currentTrackInfo.id });
+  if (!lrc.lyric) {
+    hasLyric.value = false;
+    return;
+  }
   lyric.value = parseLyric(lrc.lyric);
   lyricScroll();
 };
@@ -145,7 +152,7 @@ watch(
         </div>
       </div>
       <div class="right-content">
-        <div class="lyric-container" @mouseleave="">
+        <div v-if="hasLyric" class="lyric-container">
           <div
             class="lyric-line"
             v-for="(line, index) in lyric"
@@ -156,6 +163,9 @@ watch(
           >
             <span>{{ line.content }}</span>
           </div>
+        </div>
+        <div v-else class="empty">
+          <div class="empty-text">暂无歌词</div>
         </div>
       </div>
     </div>
@@ -305,6 +315,20 @@ watch(
         span {
           color: #fff;
         }
+      }
+    }
+
+    .empty {
+      width: 100vh;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .empty-text {
+        font-size: 24px;
+        font-weight: 600;
+        color: #fff;
       }
     }
 
