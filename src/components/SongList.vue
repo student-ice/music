@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { formatDuration } from '@/utils/format';
 import ArtistLine from './ArtistLine.vue';
 import Cover from './Cover.vue';
@@ -58,7 +57,7 @@ const getSongs = () => {
 </script>
 
 <template>
-  <div class="song-list">
+  <div v-if="songs.length" class="song-list">
     <div
       v-for="(song, index) in songs.slice(
         isPaging ? (pageNumber - 1) * loadSize : 0,
@@ -98,6 +97,9 @@ const getSongs = () => {
         <span>{{ formatDuration(song.dt) }}</span>
       </div>
     </div>
+  </div>
+  <div v-else class="loading">
+    <a-spin size="large" />
   </div>
 </template>
 
@@ -156,5 +158,9 @@ const getSongs = () => {
       background-color: var(--list-active-bg);
     }
   }
+}
+.loading {
+  text-align: center;
+  padding: 30px 50px;
 }
 </style>
