@@ -111,6 +111,7 @@ const getSongs = () => {
     padding: 10px 10px;
     cursor: pointer;
     border-radius: 0.75em;
+    user-select: none;
 
     .song-info {
       flex: 1;

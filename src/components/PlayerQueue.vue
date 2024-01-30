@@ -64,6 +64,7 @@ const ui = useUIStore();
   cursor: pointer;
   border-radius: 0.75em;
   margin-left: 8px;
+  user-select: none;
   .song-info {
     flex: 1;
     margin-left: 10px;
