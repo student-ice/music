@@ -21,11 +21,13 @@ const ui = useUIStore();
   >
     <div
       v-for="(song, index) in player.playlist.playlistModel"
+      :key="index"
       :class="
         player.playlist.currentIndex === index
           ? 'song-list active'
           : 'song-list'
       "
+      @dblclick="player.playAtIndex(index)"
     >
       <Cover
         :image-url="song.picUrl"
