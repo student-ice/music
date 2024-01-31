@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { songUrl, songDetail } from '@/api/song';
 import { usePlaylistStore, TrackModel } from './playlist';
 import { getPrivateFM } from '@/api/recommend';
+import { Howler, Howl } from 'howler';
 
 export enum PlayState {
   Playing = 0,
@@ -12,7 +13,9 @@ export enum PlayState {
 
 export const usePlayerStore = defineStore(
   'player', () => {
-    const audio = new Audio();
+    const audio = ref<Howl>(null);
+
+    const currentTimeTimer = ref<NodeJS.Timeout>(null);
 
     // 播放列表
     const playlist = usePlaylistStore();
@@ -50,7 +53,6 @@ export const usePlayerStore = defineStore(
     })
 
     const init = async () => {
-      audio.volume = 0.2;
       const { data } = await getPrivateFM();
       privateFMTrack.value = {
         id: data[0].id,
@@ -143,6 +145,12 @@ export const usePlayerStore = defineStore(
     }
 
     function play() {
+      clearInterval(currentTimeTimer.value);
+      position.value = 0;
+      positionStr.value = '00:00';
+      duration.value = 0;
+      durationStr.value = '00:00';
+      Howler.unload();
       let id: number = 0;
       if (isPrivateFM.value) {
         id = privateFMTrack.value.id;
@@ -151,12 +159,29 @@ export const usePlayerStore = defineStore(
       }
       songUrl({ id }).then(res => {
         if (res.data[0].url) {
-          audio.src = res.data[0].url;
-          audio.play().catch(err => {
-            console.error('播放失败:', err);
-          }).then(() => {
-            playState.value = PlayState.Playing;
-          })
+          audio.value = new Howl({
+            src: [res.data[0].url],
+            format: ["mp3", "flac"],
+            html5: true,
+            preload: "metadata",
+            volume: 0.5,
+            onplay: () => {
+              playState.value = PlayState.Playing;
+              updatePosition();
+              updateDuration();
+            },
+            onpause: () => {
+              playState.value = PlayState.Paused;
+              clearInterval(currentTimeTimer.value);
+            },
+            onstop: () => {
+              playState.value = PlayState.Stopped;
+            },
+            onend: () => {
+              next();
+            },
+          });
+          audio.value.play();
         } else {
           console.error('获取歌曲 URL 失败');
         }
@@ -180,19 +205,17 @@ export const usePlayerStore = defineStore(
     }
 
     function playOrPause() {
-      if (audio.src === '') return;
+      if (audio.value === null) return;
       if (playState.value === PlayState.Playing) {
-        playState.value = PlayState.Paused;
-        audio.pause();
+        audio.value.pause();
       } else {
-        playState.value = PlayState.Playing;
-        audio.play();
+        audio.value.play();
       }
     }
 
     // 快进
     function seek(time: number) {
-      audio.currentTime = time;
+      audio.value.seek(time);
     }
 
     // 更新歌曲信息
@@ -227,23 +250,21 @@ export const usePlayerStore = defineStore(
       return `${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`;
     }
 
-    // 监听播放进度
-    audio.addEventListener('timeupdate', () => {
-      position.value = audio.currentTime;
-      positionStr.value = formatTime(audio.currentTime);
-    });
-    // 监听播放时长
-    audio.addEventListener('durationchange', () => {
-      duration.value = audio.duration;
-      durationStr.value = formatTime(audio.duration);
-    })
-    audio.addEventListener('ended', () => {
-      next();
-    })
-
+    // 定时获取歌曲播放进度
+    function updatePosition() {
+      clearInterval(currentTimeTimer.value);
+      currentTimeTimer.value = setInterval(() => {
+        position.value = audio.value.seek();
+        positionStr.value = formatTime(position.value);
+      }, 250);
+    }
+    // 获取歌曲时长
+    function updateDuration() {
+      duration.value = audio.value.duration();
+      durationStr.value = formatTime(duration.value);
+    }
     watch(() => { return playlist.currentIndex }, async (newValue, oldValue) => {
       console.log('currentIndex changed:', "new ", newValue, " old ", oldValue)
-      console.log('播放列表歌曲数量: ' + playlist.playlistCount)
       if (newValue === -1) return;
       updateSongInfo();
     }, { deep: true })
