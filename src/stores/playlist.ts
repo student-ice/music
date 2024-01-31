@@ -130,6 +130,20 @@ export const usePlaylistStore = defineStore(
       return playlist.value[currentIndex.value].id;
     }
 
+    const getCurrentTrack = (): TrackModel => {
+      if (currentIndex.value === -1) {
+        return {
+          id: 0,
+          name: '未知歌曲',
+          picUrl: '/src/assets/icons/default.svg',
+          album: '未知专辑',
+          artists: '未知歌手',
+          duration: 0
+        }
+      }
+      return playlistModel.value[currentIndex.value];
+    }
+
     return {
       playlist,
       playlistId,
@@ -146,6 +160,7 @@ export const usePlaylistStore = defineStore(
       removeTrack,
       clearPlaylist,
       getCurrentTrackId,
+      getCurrentTrack
     };
   }
 );

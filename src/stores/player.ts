@@ -223,20 +223,21 @@ export const usePlayerStore = defineStore(
       let ids: string = '';
       if (isPrivateFM.value) {
         ids = privateFMTrack.value.id.toString();
+        songDetail(ids).then(res => {
+          const song = res.songs[0];
+          currentTrackInfo.value = {
+            id: song.id,
+            name: song.name,
+            picUrl: song.al.picUrl,
+            album: song.al.name,
+            artists: song.ar.map(v => v.name).join(' / '),
+            duration: song.dt
+          }
+        })
       } else {
-        ids = playlist.getCurrentTrackId().toString();
+        currentTrackInfo.value = playlist.getCurrentTrack();
       }
-      songDetail(ids).then(res => {
-        const song = res.songs[0];
-        currentTrackInfo.value = {
-          id: song.id,
-          name: song.name,
-          picUrl: song.al.picUrl,
-          album: song.al.name,
-          artists: song.ar.map(v => v.name).join(' / '),
-          duration: song.dt
-        }
-      })
+
     }
 
     // 切换播放模式
