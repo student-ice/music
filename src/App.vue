@@ -46,7 +46,7 @@ setTwoToneColor('#7752FE');
 <style lang="scss" scoped>
 .ant-layout-header {
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   width: 100%;
   text-align: center;
   color: #fff;

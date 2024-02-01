@@ -45,7 +45,7 @@ const lyricScroll = () => {
       }
     }
     const index = left;
-    if (index >= 0 && index !== hightlightIndex.value) {
+    if (index > 0 && index !== hightlightIndex.value) {
       hightlightIndex.value = index - 1;
       scrollTo(index - 1);
     }
