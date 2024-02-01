@@ -23,63 +23,29 @@ setTwoToneColor('#7752FE');
         },
       }"
     >
-      <a-layout-header>
-        <Header />
-      </a-layout-header>
-      <a-layout class="content">
-        <a-layout-sider>
-          <Sidebar />
-        </a-layout-sider>
-        <a-layout-content>
+      <Header />
+      <div class="main">
+        <Sidebar />
+        <div class="content">
           <router-view></router-view>
           <PlayerQueue />
           <Lyric v-show="ui.showLyric" />
-        </a-layout-content>
-      </a-layout>
-      <a-layout-footer>
-        <Toolbar />
-      </a-layout-footer>
+        </div>
+      </div>
+      <Toolbar />
     </a-config-provider>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.ant-layout-header {
-  position: fixed;
-  z-index: 100;
-  width: 100%;
-  text-align: center;
-  color: #fff;
-  height: 64px;
-}
-
-.ant-layout.content {
+.main {
+  display: flex;
   height: 100vh;
-
-  .ant-layout-sider {
-    padding-top: 64px;
-    padding-bottom: 64px;
-    overflow-y: scroll;
-    height: 100%;
-    line-height: 120px;
-    color: #fff;
-    background-color: rgb(240, 243, 246);
-    border-inline-end: 1px solid rgba(5, 5, 5, 0.06);
-  }
-
-  .ant-layout-content {
+  .content {
     flex: 1;
     overflow-y: scroll;
     padding: 64px 50px 64px 50px;
   }
-}
-
-.ant-layout-footer {
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
-  width: 100%;
-  height: 60px;
 }
 
 aside::-webkit-scrollbar {

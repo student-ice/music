@@ -121,13 +121,16 @@ const playerQueueBtnClicked = () => {
 
 <style lang="scss" scoped>
 .toolbar {
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: saturate(180%) blur(10px);
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(180%) blur(10px);
+  z-index: 100;
 
   .song-info {
     width: 250px;
