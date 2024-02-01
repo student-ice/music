@@ -84,6 +84,32 @@ const playerQueueBtnClicked = () => {
       :icon="player.playlist.playModeIcon"
       @click="player.switchPlayMode"
     ></icon-button>
+    <a-popover>
+      <template #content>
+        <a-slider
+          :max="1"
+          :min="0"
+          v-model:value="player.volume"
+          :step="0.01"
+          vertical
+          :tooltipOpen="false"
+          :style="{ height: '100px', width: '10px' }"
+          @afterChange="player.setVolume"
+        />
+        <!-- 怎么只保留整数 -->
+        <div :style="{ textAlign: 'center' }">
+          {{ (player.volume * 100).toFixed(0) }}%
+        </div>
+      </template>
+      <icon-button
+        class="volume-btn"
+        :icon="
+          player.volume
+            ? '/src/assets/icons/volume.svg'
+            : '/src/assets/icons/volume-mute.svg'
+        "
+      ></icon-button>
+    </a-popover>
     <icon-button
       :disable="player.isPrivateFM"
       icon="/src/assets/icons/player-queue.svg"
@@ -194,6 +220,10 @@ const playerQueueBtnClicked = () => {
 
   .play-mode-btn {
     margin-left: 10px;
+  }
+
+  .volume-text {
+    text-align: center;
   }
 }
 </style>

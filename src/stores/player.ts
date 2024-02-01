@@ -51,8 +51,18 @@ export const usePlayerStore = defineStore(
       artists: '未知歌手',
       duration: 0
     })
+    // 音量
+    const volume = ref<number>(0.5);
 
     const init = async () => {
+      // 获取本地音量
+      const localVolume = localStorage.getItem('volume');
+      if (localVolume) {
+        console.log('本地音量', localVolume);
+        volume.value = parseFloat(localVolume);
+      } else {
+        volume.value = 0.5;
+      }
       const { data } = await getPrivateFM();
       privateFMTrack.value = {
         id: data[0].id,
@@ -164,7 +174,7 @@ export const usePlayerStore = defineStore(
             format: ["mp3", "flac"],
             html5: true,
             preload: "metadata",
-            volume: 0.5,
+            volume: volume.value,
             onplay: () => {
               playState.value = PlayState.Playing;
               updatePosition();
@@ -216,6 +226,16 @@ export const usePlayerStore = defineStore(
     // 快进
     function seek(time: number) {
       audio.value.seek(time);
+    }
+
+    // 设置音量
+    function setVolume(value: number) {
+      if (audio.value === null) return;
+      console.log('设置音量', value);
+      volume.value = value;
+      audio.value.volume(value);
+      // 存储到本地
+      localStorage.setItem('volume', value.toString());
     }
 
     // 更新歌曲信息
@@ -280,6 +300,7 @@ export const usePlayerStore = defineStore(
       durationStr,
       isPrivateFM,
       privateFMTrack,
+      volume,
       init,
       play,
       playOrPause,
@@ -291,7 +312,8 @@ export const usePlayerStore = defineStore(
       playAtIndex,
       addTracks,
       playPrivateFM,
-      nextPrivateFM
+      nextPrivateFM,
+      setVolume
     }
   }
 );

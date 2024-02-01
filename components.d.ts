@@ -27,6 +27,7 @@ declare module 'vue' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
     APagination: typeof import('ant-design-vue/es')['Pagination']
+    APopover: typeof import('ant-design-vue/es')['Popover']
     AQrcode: typeof import('ant-design-vue/es')['QRCode']
     ArtistLine: typeof import('./src/components/ArtistLine.vue')['default']
     ASkeleton: typeof import('ant-design-vue/es')['Skeleton']
