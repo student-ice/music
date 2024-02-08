@@ -5,7 +5,7 @@ import { getCookie } from './auth';
 let baseUrl = '';
 
 if (process.env.NODE_ENV === 'development') {
-  baseUrl = 'http://localhost:4000';
+  baseUrl = import.meta.env.VITE_API_BASE_URL;
 }
 
 // 给axios扩展一些属性
