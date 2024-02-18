@@ -290,7 +290,7 @@ watch(
     margin-left: 2%;
 
     .lyric-container {
-      width: 100vh;
+      width: 90vh;
       height: 90vh;
       display: flex;
       flex-direction: column;
