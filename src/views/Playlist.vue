@@ -10,6 +10,7 @@ import SongList from '@/components/SongList.vue';
 import { songDetail } from '@/api/song';
 
 const route = useRoute();
+const player = usePlayerStore();
 const loading = ref<boolean>(false);
 console.log('歌单id: ', route.params.id);
 const playlistInfo = ref<PlaylistDetailPlaylist>();
@@ -50,6 +51,26 @@ const pageNumberChanged = (page: number) => {
   }
 };
 
+const getSongs = () => {
+  let _songs = [];
+  songs.value.forEach((item) => {
+    _songs.push({
+      id: item.id,
+      name: item.name,
+      picUrl: item.al.picUrl,
+      album: item.al.name,
+      artists: item.ar.map((artist) => artist.name).join('/'),
+      duration: item.dt,
+    });
+  });
+  return _songs;
+};
+
+// 播放全部
+const playAll = () => {
+  player.addTracks(route.params.id as string, getSongs(), 0, true);
+};
+
 watch(
   () => route.params.id,
   async () => {
@@ -83,7 +104,7 @@ watch(
         </div>
 
         <div class="buttons">
-          <a-button size="large" type="primary">
+          <a-button size="large" type="primary" @click="playAll">
             <template #icon>
               <CaretRightFilled style="font-size: 21px" />
             </template>

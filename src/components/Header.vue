@@ -67,6 +67,7 @@ onMounted(() => {
     <div class="main">
       <div class="search">
         <a-input-search
+          id="search"
           placeholder="搜索歌曲"
           enter-button
           @focus="searchFocus = true"
