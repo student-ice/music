@@ -152,6 +152,7 @@ const playerQueueBtnClicked = () => {
         width: 50px;
         height: 50px;
         border-radius: inherit;
+        user-select: none;
       }
 
       .full-screen-btn {

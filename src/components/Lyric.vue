@@ -28,6 +28,10 @@ const getLyricData = async () => {
     return;
   }
   lyric.value = parseLyric(lrc.lyric);
+  if (!lyric.value[0].content.startsWith('纯音乐') && lyric.value.length <= 1) {
+    hasLyric.value = false;
+    return;
+  }
   lyricScroll();
 };
 
