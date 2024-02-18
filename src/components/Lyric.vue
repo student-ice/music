@@ -131,10 +131,12 @@ watch(
         </div>
         <div class="controls">
           <IconButton
+            v-if="!player.isPrivateFM"
             icon="/src/assets/icons/previous-light.svg"
             :size="50"
             @click="player.previous"
           />
+          <div class="previous-btn" v-else></div>
           <IconButton
             :icon="
               !player.playState
@@ -276,6 +278,11 @@ watch(
       display: flex;
       justify-content: space-around;
       align-items: center;
+
+      .previous-btn {
+        width: 50px;
+        height: 50px;
+      }
     }
   }
 
