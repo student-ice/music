@@ -56,6 +56,11 @@ const delayBlur = () => {
   }, 200);
 };
 
+// 前往个人主页
+const toUserHome = () => {
+  window.open(`https://music.163.com/#/user/home?id=${userStore.userId}`);
+};
+
 onMounted(() => {
   checkLoginStatus();
   getHotSearch();
@@ -97,6 +102,10 @@ onMounted(() => {
         </div>
         <template #overlay>
           <a-menu>
+            <!-- 个人主页 -->
+            <a-menu-item>
+              <a href="javascript:;" @click="toUserHome">个人主页</a>
+            </a-menu-item>
             <a-menu-item>
               <a href="javascript:;" @click="logout">退出登录</a>
             </a-menu-item>
