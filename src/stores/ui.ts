@@ -10,8 +10,12 @@ export const useUIStore = defineStore('ui', () => {
   // 显示歌词页面
   const showLyric = ref<boolean>(false);
 
+  // 是否折叠侧边栏
+  const isCollapsed = ref<boolean>(false);
+
   return {
     showPlayerQueue,
-    showLyric
+    showLyric,
+    isCollapsed
   }
 })

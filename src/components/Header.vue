@@ -2,13 +2,16 @@
 import { ref, onMounted } from 'vue';
 import Login from './Login.vue';
 import { useUserStore } from '@/stores/user';
+import { useUIStore } from '@/stores/ui';
 import { loginStatus } from '@/api/login';
 import { clearCookie } from '@/utils/auth';
 import { useRouter } from 'vue-router';
 import { getHotSearchList } from '@/api/search';
+import IconButton from '@/components/IconButton.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
+const uiStore = useUIStore();
 const loginRef = ref(null);
 const searchFocus = ref(false);
 const hotSearchList = ref([]);
@@ -68,9 +71,26 @@ onMounted(() => {
 </script>
 <template>
   <div class="nav">
-    <div class="side"></div>
+    <div
+      class="side"
+      :style="{ width: uiStore.isCollapsed ? '80px' : '200px' }"
+    ></div>
     <div class="main">
       <div class="search">
+        <icon-button
+          v-if="!uiStore.isCollapsed"
+          class="fold-btn"
+          :size="30"
+          icon="/src/assets/icons/unfold.svg"
+          @click="uiStore.isCollapsed = true"
+        ></icon-button>
+        <icon-button
+          v-else
+          class="fold-btn"
+          :size="30"
+          icon="/src/assets/icons/fold.svg"
+          @click="uiStore.isCollapsed = false"
+        ></icon-button>
         <a-input-search
           id="search"
           placeholder="搜索歌曲"
@@ -146,7 +166,6 @@ onMounted(() => {
 
   .side {
     height: 100%;
-    width: 200px;
     background-color: rgb(240, 243, 246);
   }
 
@@ -168,7 +187,9 @@ onMounted(() => {
 
     .search {
       position: relative;
-      width: 300px;
+      display: flex;
+      align-items: center;
+      width: 340px;
       z-index: 101;
       .ant-input-group-wrapper {
         width: 100%;
@@ -177,8 +198,8 @@ onMounted(() => {
       .hot-search {
         position: absolute;
         top: 100%;
-        left: 0;
-        width: 100%;
+        left: 40px;
+        width: calc(100% - 40px);
         padding: 10px;
         margin-top: 5px;
         background-color: #fff;
