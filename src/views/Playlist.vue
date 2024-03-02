@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { formatDate } from '@/utils/format';
 import { useRoute } from 'vue-router';
-import { playlistDetail } from '@/api/playlist';
+import { playlistDetail, PlaylistDetailResponsePlaylist } from '@/api/playlist';
 import { CaretRightFilled } from '@ant-design/icons-vue';
 import { usePlayerStore } from '@/stores/player';
 import Cover from '@/components/Cover.vue';
@@ -13,7 +13,7 @@ const route = useRoute();
 const player = usePlayerStore();
 const loading = ref<boolean>(false);
 console.log('歌单id: ', route.params.id);
-const playlistInfo = ref<PlaylistDetailPlaylist>();
+const playlistInfo = ref<PlaylistDetailResponsePlaylist>();
 const songs = ref<Track[]>([]);
 const count = ref<number>(0);
 const pageNumber = ref<number>(1);

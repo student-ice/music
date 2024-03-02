@@ -7,3 +7,22 @@ export function topArtists(): Promise<TopArtistsResponse> {
     noCookie: true,
   })
 }
+
+interface TopArtistsResponse {
+  "code": number,
+  "more": boolean,
+  "artists": {
+    "name": string,
+    "id": number,
+    "briefDesc": string,
+    "picUrl": string,
+    "img1v1Url": string,
+    "albumSize": number,
+    "alias": Array<string>,
+    "trans": string,
+    "musicSize": number,
+    "topicPerson": number,
+    "followed": false,
+    "fansCount": number
+  }[]
+}

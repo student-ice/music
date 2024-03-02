@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 // 获取推荐新歌
-export function newSong(params: Params): Promise<NewSongResult> {
+export function newSong(params: Params): Promise<NewSongResponse> {
   return request({
     url: '/personalized/newsong',
     method: 'get',
@@ -11,7 +11,7 @@ export function newSong(params: Params): Promise<NewSongResult> {
 }
 
 // 获取歌曲Url
-export async function songUrl(params: MusicUrlParams): Promise<SongUrlResult> {
+export async function songUrl(params: MusicUrlParams): Promise<SongUrlResponse> {
   return request({
     url: '/song/url',
     method: 'get',
@@ -20,7 +20,7 @@ export async function songUrl(params: MusicUrlParams): Promise<SongUrlResult> {
 }
 
 // 获取歌曲详情
-export async function songDetail(ids: string): Promise<SongDetailResult> {
+export async function songDetail(ids: string): Promise<SongDetailResponse> {
   return request({
     url: '/song/detail',
     method: 'get',
@@ -48,24 +48,97 @@ export async function getRecommendSong(): Promise<RecommendSongResult> {
   })
 }
 
-export interface LyricParams {
+interface LyricParams {
   id: number;
 }
-export interface SongDetailResult {
+interface SongDetailResponse {
   code: number;
   songs: Track[];
 }
 
-export interface LyricResult {
+interface LyricResult {
   code: number;
   lrc: {
     lyric: string;
   };
 }
 
-export interface RecommendSongResult {
+interface RecommendSongResult {
   code: number;
   data: {
     dailySongs: Track[];
   };
+}
+
+export interface NewSongsResult {
+  alg: string;
+  canDislike: boolean;
+  copywriter: null;
+  id: number;
+  name: string;
+  picUrl: string;
+  song: {
+    alias: string[];
+    artists: {
+      albumSize: number
+      briefDesc: string;
+      id: number;
+      img1v1Url: string;
+      musicSize: number;
+      name: string;
+      picUrl: string;
+      topicPerson: number;
+      trans: string;
+    }[];
+    audition: null;
+    album: {
+      blurPicUrl: string;
+      description: string;
+      id: number;
+      name: string;
+      picUrl: string;
+      publishTime: number;
+      size: number;
+      songs: string[];
+      status: number;
+      subType: string;
+      tags: string;
+      transName: null;
+      type: string;
+    };
+    dayPlays: number;
+    disc: string;
+    duration: number;
+    fee: number;
+    id: number;
+    mvid: number;
+    name: string;
+    position: number;
+  };
+  trackNumberUpdateTime: null;
+  type: number;
+};
+
+interface NewSongResponse {
+  category: number;
+  code: number;
+  result: NewSongsResult[];
+}
+
+interface SongUrlResponse {
+  code: number;
+  data: {
+    br: number;
+    canExtend: boolean;
+    code: number;
+    fee: number;
+    id: number;
+    level: string;
+    md5: string;
+    peak: number;
+    size: number;
+    time: number;
+    type: string;
+    url: string;
+  }[];
 }
