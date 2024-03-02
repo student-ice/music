@@ -77,20 +77,28 @@ onMounted(() => {
     ></div>
     <div class="main">
       <div class="search">
-        <icon-button
-          v-if="!uiStore.isCollapsed"
-          class="fold-btn"
-          :size="30"
-          icon="/src/assets/icons/unfold.svg"
-          @click="uiStore.isCollapsed = true"
-        ></icon-button>
-        <icon-button
-          v-else
-          class="fold-btn"
-          :size="30"
-          icon="/src/assets/icons/fold.svg"
-          @click="uiStore.isCollapsed = false"
-        ></icon-button>
+        <a-popover v-if="!uiStore.isCollapsed" placement="bottom">
+          <template #content>
+            <p>折叠侧边栏</p>
+          </template>
+          <icon-button
+            class="fold-btn"
+            :size="30"
+            icon="/src/assets/icons/unfold.svg"
+            @click="uiStore.isCollapsed = true"
+          ></icon-button>
+        </a-popover>
+        <a-popover v-else placement="bottom">
+          <template #content>
+            <p>展开侧边栏</p>
+          </template>
+          <icon-button
+            class="fold-btn"
+            :size="30"
+            icon="/src/assets/icons/fold.svg"
+            @click="uiStore.isCollapsed = false"
+          ></icon-button>
+        </a-popover>
         <a-input-search
           id="search"
           placeholder="搜索歌曲"
