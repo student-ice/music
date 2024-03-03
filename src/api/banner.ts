@@ -8,19 +8,21 @@ export function banner(): Promise<BannerResponse> {
   })
 }
 
+export interface Banners {
+  imageUrl: string;
+  monitorType: null;
+  program: null;
+  scm: string;
+  song: null;
+  targetId: number;
+  targetType: number;
+  titleColor: string;
+  typeTitle: string;
+  url: string;
+  video: null;
+}
+
 interface BannerResponse {
-  banners: {
-    imageUrl: string;
-    monitorType: null;
-    program: null;
-    scm: string;
-    song: null;
-    targetId: number;
-    targetType: number;
-    titleColor: string;
-    typeTitle: string;
-    url: string;
-    video: null;
-  }[];
+  banners: Banners[];
   code: number;
 }

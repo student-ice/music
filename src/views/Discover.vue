@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import Grid from "@/components/Grid.vue";
-import { topPlaylists } from "@/api/playlist";
+import { ref, onMounted } from 'vue';
+import Grid from '@/components/Grid.vue';
+import { topPlaylists } from '@/api/playlist';
 
-const categories = ref(["全部", "推荐", "官方", "华语", "欧美", "流行"]);
-const currentCategory = ref("全部");
-const playlists = ref([]);
+const categories = ref(['全部', '推荐', '官方', '华语', '欧美', '流行']);
+const currentCategory = ref('全部');
+const playlists = ref<PlaylistBaseInfo[]>([]);
 const loading = ref(false);
 const hasMore = ref(true);
 var limit = 20;
@@ -39,7 +39,11 @@ const switchCategories = (item: string) => {
 
 const loadMore = () => {
   loading.value = true;
-  topPlaylists({ cat: currentCategory.value, limit, offset: offset + limit }).then((res) => {
+  topPlaylists({
+    cat: currentCategory.value,
+    limit,
+    offset: offset + limit,
+  }).then((res) => {
     if (!hasMore) {
       return;
     }
@@ -58,18 +62,23 @@ const loadMore = () => {
   <div class="index-discover">
     <h2>发现歌单</h2>
     <div class="tabs">
-      <div class="btn" v-for="item in categories" :class="{ active: item === currentCategory }"
-        @click="switchCategories(item)">
+      <div
+        class="btn"
+        v-for="item in categories"
+        :class="{ active: item === currentCategory }"
+        @click="switchCategories(item)"
+      >
         {{ item }}
       </div>
     </div>
     <Grid :items="playlists" :column-num="5" type="discover" />
     <div class="load-more" v-show="hasMore">
-      <a-button size="large" :loading="loading" @click="loadMore">加载更多</a-button>
+      <a-button size="large" :loading="loading" @click="loadMore"
+        >加载更多</a-button
+      >
     </div>
   </div>
 </template>
-
 
 <style lang="scss" scoped>
 .tabs {

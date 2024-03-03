@@ -6,15 +6,15 @@ import { useUIStore } from '@/stores/ui';
 import { loginStatus } from '@/api/login';
 import { clearCookie } from '@/utils/auth';
 import { useRouter } from 'vue-router';
-import { getHotSearchList } from '@/api/search';
+import { getHotSearchList, HotSearchListResultHots } from '@/api/search';
 import IconButton from '@/components/IconButton.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
 const uiStore = useUIStore();
-const loginRef = ref(null);
+const loginRef = ref();
 const searchFocus = ref(false);
-const hotSearchList = ref([]);
+const hotSearchList = ref<HotSearchListResultHots[]>();
 
 const openLoginModal = () => {
   loginRef.value.openLoginModal();

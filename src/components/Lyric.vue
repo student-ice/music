@@ -14,7 +14,7 @@ const player = usePlayerStore();
 const background = ref<string>('rgb(240, 243, 246)');
 const lyric = ref<Array<{ time: number; content: string }>>([]);
 const hightlightIndex = ref<number>(0);
-const lyricTimer = ref<NodeJS.Timeout>(null);
+const lyricTimer = ref<NodeJS.Timeout>();
 const hasLyric = ref<boolean>(true);
 
 const getLyricData = async () => {
@@ -77,7 +77,7 @@ watch(
     const url = `${player.privateFMTrack.picUrl}?param=256y256`;
     Vibrant.from(url)
       .getPalette()
-      .then((palette) => {
+      .then((palette: any) => {
         const originColor = Color.rgb(palette.DarkMuted._rgb);
         const color = originColor.darken(0.1).rgb().string();
         const color2 = originColor.lighten(0.28).rotate(-30).rgb().string();

@@ -17,8 +17,6 @@ declare module 'vue' {
     ADropdownButton: typeof import('ant-design-vue/es')['DropdownButton']
     AImage: typeof import('ant-design-vue/es')['Image']
     AInputSearch: typeof import('ant-design-vue/es')['InputSearch']
-    ALayout: typeof import('ant-design-vue/es')['Layout']
-    ALayoutContent: typeof import('ant-design-vue/es')['LayoutContent']
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuDivider: typeof import('ant-design-vue/es')['MenuDivider']

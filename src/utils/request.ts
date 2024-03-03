@@ -13,6 +13,11 @@ declare module 'axios' {
   interface AxiosRequestConfig {
     noCookie?: boolean;
   }
+
+  interface AxiosInstance {
+    (config: AxiosRequestConfig<any>): Promise<any>;
+  }
+
 }
 
 const server = axios.create({
@@ -36,6 +41,12 @@ server.interceptors.request.use(
     Promise.reject(err);
   }
 );
+
+interface ResponseData {
+  code?: number;
+  more?: any;
+  artists?: PlaylistBaseInfo[];
+}
 
 // 响应拦截器
 server.interceptors.response.use(

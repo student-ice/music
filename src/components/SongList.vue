@@ -3,6 +3,7 @@ import { formatDuration } from '@/utils/format';
 import ArtistLine from './ArtistLine.vue';
 import Cover from './Cover.vue';
 import { usePlayerStore } from '@/stores/player';
+import { TrackModel } from '@/stores/playlist';
 
 const props = defineProps({
   songs: {
@@ -41,7 +42,7 @@ const songItemDbClicked = (index: number) => {
 };
 
 const getSongs = () => {
-  let songs = [];
+  let songs: TrackModel[] = [];
   props.songs.forEach((item) => {
     songs.push({
       id: item.id,

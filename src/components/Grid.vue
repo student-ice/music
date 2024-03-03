@@ -5,7 +5,7 @@ import SkeletonImage from './SkeletonImage.vue';
 
 const props = defineProps({
   items: {
-    type: Array<any>,
+    type: Array<PlaylistBaseInfo>,
     required: true,
   },
   columnNum: {
@@ -35,12 +35,7 @@ const rowStyles = computed(() => {
   };
 });
 
-const getImageUrl = (item) => {
-  if (props.type === 'artist') {
-    return item.img1v1Url;
-  } else if (props.type === 'discover' || props.type === 'winnow') {
-    return item.coverImgUrl;
-  }
+const getImageUrl = (item: PlaylistBaseInfo) => {
   return item.picUrl;
 };
 </script>

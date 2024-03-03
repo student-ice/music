@@ -15,7 +15,7 @@ const router = useRouter();
 const user = useUserStore();
 const ui = useUIStore();
 
-const goto = (item) => {
+const goto = (item: { key: string }) => {
   if (item.key !== route.name) {
     if (item.key === 'like-songs') {
       router.push({
@@ -34,7 +34,11 @@ const goto = (item) => {
 </script>
 
 <template>
-  <a-layout-sider v-model:collapsed="ui.isCollapsed" collapsible>
+  <a-layout-sider
+    v-model:collapsed="ui.isCollapsed"
+    collapsible
+    :trigger="null"
+  >
     <a-menu :selectedKeys="[route.name]" @click="goto">
       <a-menu-item key="index" :icon="h(HomeFilled)">为我推荐</a-menu-item>
       <a-menu-item key="winnow" :icon="h(StarFilled)">精选</a-menu-item>

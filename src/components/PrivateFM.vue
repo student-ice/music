@@ -17,7 +17,7 @@ watch(
     const url = `${player.privateFMTrack.picUrl}?param=512y512`;
     Vibrant.from(url)
       .getPalette()
-      .then((palette) => {
+      .then((palette: any) => {
         const color = Color.rgb(palette.Vibrant._rgb)
           .darken(0.1)
           .rgb()

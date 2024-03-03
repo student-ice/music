@@ -8,7 +8,7 @@ const { useToken } = theme;
 const { token } = useToken();
 const qrImg = ref<string>('');
 const qrStatus = ref<string>('loading');
-const qrInterval = ref<NodeJS.Timeout>(null);
+const qrInterval = ref<NodeJS.Timeout>();
 
 const getQrImg = async () => {
   qrStatus.value = 'loading';

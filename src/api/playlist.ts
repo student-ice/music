@@ -16,6 +16,15 @@ export function topPlaylists(params: TopPlaylistParams): Promise<TopPlaylistResp
     method: 'get',
     noCookie: true,
     params,
+  }).then((res) => {
+    res.playlists = res.playlists.map((playlist) => {
+      return {
+        id: playlist.id,
+        name: playlist.name,
+        picUrl: playlist.coverImgUrl,
+      };
+    });
+    return res;
   });
 }
 
@@ -65,22 +74,11 @@ interface RecommendPlaylistResponse {
   hasTaste: boolean;
   code: number;
   category: number;
-  result: {
-    id: number;
-    type: number;
-    name: string;
-    copywriter: string;
-    picUrl: string;
-    canDislike: boolean;
-    trackNumberUpdateTime: number;
-    playCount: number;
-    trackCount: number;
-    highQuality: boolean;
-  }[];
+  result: PlaylistBaseInfo[];
 }
 
 interface TopPlaylistResponse {
-  playlists: PlaylistData[];
+  playlists: PlaylistBaseInfo[];
   total: number;
   code: number;
   more: boolean;

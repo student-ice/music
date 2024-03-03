@@ -2,16 +2,16 @@
 import { onMounted, ref } from 'vue';
 import { recommendPlaylists } from '@/api/playlist';
 import { topArtists } from '@/api/artist';
-import { banner } from '@/api/banner';
+import { banner, Banners } from '@/api/banner';
 import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
 import PrivateFM from '@/components/PrivateFM.vue';
 import { usePlayerStore } from '@/stores/player';
 
 const player = usePlayerStore();
-const bannerRes = ref([]);
-const recommendPlaylistsRes = ref([]);
-const topArtistsRes = ref([]);
+const bannerRes = ref<Banners[]>([]);
+const recommendPlaylistsRes = ref<PlaylistBaseInfo[]>([]);
+const topArtistsRes = ref<PlaylistBaseInfo[]>([]);
 
 onMounted(() => {
   banner().then((res) => {

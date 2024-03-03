@@ -8,6 +8,7 @@ import { usePlayerStore } from '@/stores/player';
 import Cover from '@/components/Cover.vue';
 import SongList from '@/components/SongList.vue';
 import { songDetail } from '@/api/song';
+import { TrackModel } from '@/stores/playlist';
 
 const route = useRoute();
 const player = usePlayerStore();
@@ -20,7 +21,10 @@ const pageNumber = ref<number>(1);
 const loadSize = ref<number>(50);
 
 const loadSongs = async () => {
-  let ids = [];
+  let ids: number[] = [];
+  if (playlistInfo.value === undefined) {
+    return;
+  }
   playlistInfo.value.trackIds.forEach((item) => {
     ids.push(item.id);
   });
@@ -52,7 +56,7 @@ const pageNumberChanged = (page: number) => {
 };
 
 const getSongs = () => {
-  let _songs = [];
+  let _songs: TrackModel[] = [];
   songs.value.forEach((item) => {
     _songs.push({
       id: item.id,

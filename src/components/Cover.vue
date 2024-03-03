@@ -28,13 +28,17 @@ const props = defineProps({
 });
 
 const coverStyles = computed(() => {
-  let style: {} = {};
+  let style: {
+    width?: string;
+    height?: string;
+    borderRadius?: string;
+  } = {};
   if (props.imgSize !== 0) {
     style['width'] = props.imgSize + 'px';
     style['height'] = props.imgSize + 'px';
   }
   if (props.type === 'artist') {
-    style['border-radius'] = '50%';
+    style['borderRadius'] = '50%';
   }
   return style;
 });

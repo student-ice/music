@@ -2,12 +2,12 @@
 import { RightOutlined } from '@ant-design/icons-vue';
 import Grid from '@/components/Grid.vue';
 import { ref, onMounted } from 'vue';
-import { topPlaylists, PlaylistData } from '@/api/playlist';
+import { topPlaylists } from '@/api/playlist';
 import { newSong, NewSongsResult } from '@/api/song';
 import { usePlayerStore } from '@/stores/player';
 
 const activeKey = ref('1');
-const playlists = ref<PlaylistData[]>([]);
+const playlists = ref<PlaylistBaseInfo[]>([]);
 const newSongs = ref<NewSongsResult[]>([]);
 const player = usePlayerStore();
 

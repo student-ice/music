@@ -5,24 +5,21 @@ export function topArtists(): Promise<TopArtistsResponse> {
     url: '/top/artists',
     method: 'get',
     noCookie: true,
-  })
+  }).then((res) => {
+    res.artists = res.artists.map((artist) => {
+      return {
+        id: artist.id,
+        name: artist.name,
+        picUrl: artist.img1v1Url,
+
+      }
+    })
+    return res;
+  });
 }
 
 interface TopArtistsResponse {
   "code": number,
   "more": boolean,
-  "artists": {
-    "name": string,
-    "id": number,
-    "briefDesc": string,
-    "picUrl": string,
-    "img1v1Url": string,
-    "albumSize": number,
-    "alias": Array<string>,
-    "trans": string,
-    "musicSize": number,
-    "topicPerson": number,
-    "followed": false,
-    "fansCount": number
-  }[]
+  "artists": PlaylistBaseInfo[]
 }

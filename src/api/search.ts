@@ -35,14 +35,16 @@ export interface SearchResult {
   }
 }
 
+export interface HotSearchListResultHots {
+  first: string;
+  second: number;
+  third: number;
+  iconType: number;
+}
+
 export interface HotSearchList {
   code: number;
   result: {
-    hots: {
-      first: string;
-      second: number;
-      third: number;
-      iconType: number;
-    }[];
+    hots: HotSearchListResultHots[];
   }
 }

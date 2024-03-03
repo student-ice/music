@@ -13,16 +13,20 @@ const props = defineProps({
 });
 
 const imageStyles = computed(() => {
-  let styles = {};
+  let styles: {
+    aspectRatio?: number;
+    height?: string;
+    borderRadius?: string;
+  } = {};
   if (props.square) {
-    styles['aspect-ratio'] = 1;
+    styles['aspectRatio'] = 1;
   } else {
     styles['height'] = '100%';
   }
   if (props.type === 'artist') {
-    styles['border-radius'] = '50%';
+    styles['borderRadius'] = '50%';
   } else {
-    styles['border-radius'] = '0.75em';
+    styles['borderRadius'] = '0.75em';
   }
   return styles;
 });
