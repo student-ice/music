@@ -32,6 +32,9 @@ const getLyricData = async () => {
     hasLyric.value = false;
     return;
   }
+  // 切换歌曲,快速回顶
+  const el = document.getElementById(`line-0`);
+  if (el) el.scrollTop = 0;
   lyricScroll();
 };
 
