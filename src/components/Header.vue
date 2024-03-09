@@ -168,8 +168,8 @@ onMounted(() => {
   width: 100%;
   text-align: center;
   color: #fff;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: saturate(180%) blur(20px);
   z-index: 100;
 
   .side {

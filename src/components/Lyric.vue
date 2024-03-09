@@ -56,7 +56,7 @@ const lyricScroll = () => {
       hightlightIndex.value = index - 1;
       scrollTo(index - 1);
     }
-  }, 500);
+  }, 1000);
 };
 
 const scrollTo = (index: number) => {
