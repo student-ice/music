@@ -58,9 +58,3 @@ npm run dev
 ## 免责声明
 
 本项目部分功能使用了网易云音乐的第三方 API 服务，**仅供个人学习研究使用，禁止用于商业及非法用途**
-
-## 特别鸣谢
-
-- [Vue.js](https://github.com/vuejs)
-- [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
-- [Ant Design Vue](https://github.com/vueComponent/ant-design-vue)
